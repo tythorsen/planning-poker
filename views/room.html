@@ -1,0 +1,49 @@
+<md-content>
+	<section layout="row" layout-sm="column" layout-align="space-around center">
+		<h1>Room: {{ room.$id }}</h1>
+		<section ng-show="user.leader" layout="row" layout-sm="column" layout-align="center center">
+			<p>Choose a Card Deck:</p>
+			<md-radio-group ng-model="room.deckIndex" ng-change="changeDeck()">
+				<md-radio-button ng-repeat="deck in cardDecks" ng-value="$index" aria-label="{{ deck.name }}">
+					{{ deck.name }}
+				</md-radio-button>
+			</mg-radio-group>
+		</section>
+	</section>
+	<section layout="row" layout-align="center center" layout-wrap>
+		<md-card ng-repeat="card in selectedDeck" ng-class="{ 'selected': card.val == user.vote.val }" class="choosable" ng-click="chooseCard(card.val, card.text, card.fa)">
+			<md-card-content>
+				<p>
+					<span ng-show="card.fa"><i class="fa fa-{{ card.fa }}"></i></span>
+					<span ng-hide="card.fa">{{ card.text }}</span>
+				</p>
+			</md-card-content>
+		</md-card>
+	</section>
+	<section layout="row" layout-sm="column" layout-align="center center">
+		<md-checkbox ng-model="user.voter" ng-change="toggleVoter()" aria-label="User is Voter">
+			<span ng-show="user.voter">You are a voter</span>
+			<span ng-hide="user.voter">You are not a voter</span>
+		</md-checkbox>
+	</section>
+	<section layout="row" layout-align="center center" layout-wrap>
+		<md-card ng-repeat="(key, roomUser) in room.users" ng-show="roomUser.voter" ng-class="{ 'no-vote': !roomUser.vote, 'selected': key == user.$id && roomUser.vote }">
+			<md-card-content>
+				<p ng-show="room.reveal">
+					<span ng-show="roomUser.vote">
+						<span ng-show="roomUser.vote.fa"><i class="fa fa-{{ roomUser.vote.fa }}"></i></span>
+						<span ng-hide="roomUser.vote.fa">{{ roomUser.vote.text }}</span>
+					</span>
+					<span ng-hide="roomUser.vote">&nbsp;</span>
+				</p>
+				<p ng-hide="room.reveal">
+					<span>&nbsp;</span>
+				</p>
+			</md-card-content>
+		</md-card>
+	</section>
+	<section class="leader-actions" ng-show="user.leader" layout="row" layout-align="center center" layout-wrap>
+		<md-button class="md-primary md-raised" ng-click="reveal()"><i class="fa fa-search"></i> Reveal</md-button>
+		<md-button class="md-raised" ng-click="reset()"><i class="fa fa-undo"></i> Reset</md-button>
+	</section>
+</md-content>
