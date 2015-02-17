@@ -58,7 +58,8 @@
         newRoom: function(roomId, deckIndex) {
           $firebase(firebase.child('rooms').child(roomId)).$set({
             deckIndex: deckIndex,
-            reveal: false
+            reveal: false,
+            updatedAt: Firebase.ServerValue.TIMESTAMP
           });
         },
 
@@ -94,6 +95,7 @@
       
       $scope.changeDeck = function() {
         resetVotes();
+        $scope.room.updatedAt = Firebase.ServerValue.TIMESTAMP;
         $scope.room.$save();
       };
 
@@ -110,11 +112,13 @@
 
       $scope.reset = function() {
         resetVotes();
+        $scope.room.updatedAt = Firebase.ServerValue.TIMESTAMP;
         $scope.room.$save();
       };
 
       $scope.reveal = function() {
         $scope.room.reveal = true;
+        $scope.room.updatedAt = Firebase.ServerValue.TIMESTAMP;
         $scope.room.$save();
       };
 
