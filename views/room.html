@@ -27,7 +27,7 @@
 		</md-checkbox>
 	</section>
 	<section layout="row" layout-align="center center" layout-wrap>
-		<md-card ng-repeat="(key, roomUser) in room.users" ng-show="roomUser.voter" ng-class="{ 'no-vote': !roomUser.vote, 'selected': key == user.$id && roomUser.vote }">
+		<md-card ng-repeat="(key, roomUser) in room.users" ng-show="roomUser.voter" ng-class="{ 'no-vote': !roomUser.vote, 'card-back': roomUser.vote && !room.reveal, 'selected': key == user.$id && roomUser.vote }">
 			<md-card-content>
 				<p ng-show="room.reveal">
 					<span ng-show="roomUser.vote">
