@@ -1,0 +1,74 @@
+.planning-poker {
+
+  a {
+    color: #2196F3;
+    text-decoration: none;
+    font-weight: bold;
+  }
+
+  md-toolbar .md-toolbar-tools .md-button,
+  md-toolbar .md-toolbar-tools .md-button:hover {
+    box-shadow: none;
+    border: none;
+    transform: none;
+    -webkit-transform: none;
+  }
+
+  .thorsent-home md-icon {
+    margin: 10px;
+  }
+
+  md-card {
+    width: auto;
+    min-width: 60px;
+
+    md-card-content {
+      padding: 16px 8px;
+      text-align: center;
+
+      p {
+        overflow: hidden;
+      }
+    }
+
+    &.card-back {
+      background-image: url("../../assets/images/card_back.png");
+    }
+
+    &.selected {
+      background-color: #BBDEFB;
+      color: rgba(0,0,0,0.87);
+    }
+
+    &.choosable:hover {
+      cursor: pointer;
+      background-color: #2196F3;
+      color: rgba(255,255,255,1);
+    }  
+
+    &.no-vote {
+      box-shadow: none;
+
+      md-card-content {
+        outline: 1px dotted rgba(0,0,0,0.87);
+      }
+    }
+  }
+
+  .leader-actions {
+    padding: 16px;
+
+    button {
+      margin: 0 6px;
+      padding: 6px 12px;
+    }
+
+    i {
+      margin-right: 6px;
+    }
+  }
+
+  .copyright {
+    color: rgba(0,0,0,0.26);
+  }
+}
