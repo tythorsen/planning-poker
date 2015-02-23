@@ -6,6 +6,11 @@
 
   angular.module('thorsent', ['ngRoute', 'ngMaterial', 'firebase'])
 
+    .config(["$mdThemingProvider", function($mdThemingProvider) {
+      $mdThemingProvider.theme('default')
+        .primaryPalette('blue');
+    }])
+
     .config(['$routeProvider', function($routeProvider) {
       $routeProvider
         .when('/', {

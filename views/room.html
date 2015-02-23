@@ -4,7 +4,7 @@
 		<section ng-show="user.leader" layout="row" layout-sm="column" layout-align="center center">
 			<p>Choose a Card Deck:</p>
 			<md-radio-group ng-model="room.deckIndex" ng-change="changeDeck()">
-				<md-radio-button ng-repeat="deck in cardDecks" ng-value="$index" aria-label="{{ deck.name }}">
+				<md-radio-button ng-repeat="deck in cardDecks" ng-value="$index" aria-label="{{ deck.name }}" class="md-primary">
 					{{ deck.name }}
 				</md-radio-button>
 			</mg-radio-group>
@@ -21,7 +21,7 @@
 		</md-card>
 	</section>
 	<section layout="row" layout-sm="column" layout-align="center center">
-		<md-checkbox ng-model="user.voter" ng-change="toggleVoter()" aria-label="User is Voter">
+		<md-checkbox ng-model="user.voter" ng-change="toggleVoter()" aria-label="User is Voter" class="md-primary">
 			<span ng-show="user.voter">You are a voter</span>
 			<span ng-hide="user.voter">You are not a voter</span>
 		</md-checkbox>
