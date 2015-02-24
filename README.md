@@ -1,4 +1,4 @@
 Planning Poker
 ==============
 
-A shameless hat.jit.su clone built with angular and firebase.
+A free, online agile estimation tool for distributed or colocated project teams.

@@ -1,6 +1,63 @@
 (function(window, angular, undefined) {
   "use-strict";
 
+  var PlanningPoker = namespace("Thorsent.PlanningPoker");
+  extend(PlanningPoker, {
+
+    getBestGuess: function(users, deck) {
+      //console.log(users, deck);
+      var voteMap = this.mapVotes(users);
+      var totalVotes = 0;
+      var bestGuesses = [];
+      var max = 0;
+
+      angular.forEach(voteMap, function(voteCount, vote) {
+        totalVotes += voteCount;
+        if (voteCount > max) {
+          bestGuesses = [vote];
+          max = voteCount;
+        } else if (voteCount === max) {
+          bestGuesses.push(vote);
+        }
+      });
+
+      return {
+        consensusLevel: this.getConsensusLevel(bestGuesses, max/totalVotes),
+        guesses: bestGuesses
+      };
+    },
+
+    getConsensusLevel: function(bestGuesses, consensusPercentage) {
+      if (bestGuesses.length !== 1) {
+        return "Too Close To Call";
+      } else if (consensusPercentage === 1) {
+        return "Unanimous";
+      } else if (consensusPercentage >= 0.75) {
+        return "Consensus";
+      } else if (consensusPercentage >= 0.5) {
+        return "Majority";
+      } else {
+        return "Plurality";
+      }
+    },
+
+    mapVotes: function(users) {
+      var voteMap = {};
+
+      angular.forEach(users, function(user, key) {
+        if (user.vote) {
+          if (voteMap[user.vote.text]) {
+            voteMap[user.vote.text]++;
+          } else {
+            voteMap[user.vote.text] = 1;
+          }
+        }
+      });
+
+      return voteMap;
+    }
+  });  
+
   var firebase = new Firebase("https://sweltering-torch-73.firebaseio.com/");
   var CardDecks = Thorsent.PlanningPoker.Decks;
 
@@ -132,7 +189,11 @@
       };
 
       $scope.$watch("room.deckIndex", function() {
-        $scope.selectedDeck = CardDecks[$scope.room.deckIndex].cards;
+        $scope.selectedDeck = CardDecks[$scope.room.deckIndex];
+      });
+
+      $scope.$watch("room.users", function() {
+        PlanningPoker.getBestGuess($scope.room.users, $scope.selectedDeck);
       });
 
       var roomId = $routeParams.roomId;

@@ -11,7 +11,7 @@
 		</section>
 	</section>
 	<section layout="row" layout-align="center center" layout-wrap>
-		<md-card ng-repeat="card in selectedDeck" ng-class="{ 'selected': card.val == user.vote.val }" class="choosable" ng-click="chooseCard(card.val, card.text, card.fa)">
+		<md-card ng-repeat="card in selectedDeck.cards" ng-class="{ 'selected': card.val == user.vote.val }" class="choosable" ng-click="chooseCard(card.val, card.text, card.fa)">
 			<md-card-content>
 				<p>
 					<span ng-show="card.fa"><i class="fa fa-{{ card.fa }}"></i></span>
