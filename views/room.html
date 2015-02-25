@@ -1,14 +1,6 @@
 <md-content>
-	<section layout="row" layout-sm="column" layout-align="space-around center">
+	<section layout="row" layout-sm="column" layout-align="center center">
 		<h1>Room: {{ room.$id }}</h1>
-		<section ng-show="user.leader" layout="row" layout-sm="column" layout-align="center center">
-			<p>Choose a Card Deck:</p>
-			<md-radio-group ng-model="room.deckIndex" ng-change="changeDeck()">
-				<md-radio-button ng-repeat="deck in cardDecks" ng-value="$index" aria-label="{{ deck.name }}" class="md-primary">
-					{{ deck.name }}
-				</md-radio-button>
-			</mg-radio-group>
-		</section>
 	</section>
 	<section layout="row" layout-sm="column" layout-align="center center">
 		<h4>
@@ -48,9 +40,13 @@
 			</md-card-content>
 		</md-card>
 	</section>
-	<section class="leader-actions" ng-show="user.leader" layout="row" layout-align="center center" layout-wrap>
+	<section class="leader-actions" ng-show="user.leader" layout="row" layout-sm="column" layout-align="center center">
 		<md-button class="md-primary md-raised" ng-click="reveal()"><i class="fa fa-search"></i> Reveal</md-button>
 		<md-button class="md-raised" ng-click="reset()"><i class="fa fa-undo"></i> Reset</md-button>
+		<md-select ng-model="room.deckIndex" ng-change="changeDeck()">
+			<md-select-label>Choose a Card Deck</md-select-label>
+  		<md-option ng-value="$index" ng-repeat="deck in cardDecks">{{ deck.name }}</md-option>
+		</md-select>
 	</section>
 	<section ng-show="room.reveal" layout="row" layout-align="center center" layout-wrap>
 		<h3>Vote Results: {{ room.results.consensusLevel }}</h3>

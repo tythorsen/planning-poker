@@ -14,7 +14,7 @@
     -webkit-transform: none;
   }
 
-  .thorsent-home md-icon {
+  .thorsent-home img {
     margin: 10px;
   }
 
@@ -59,12 +59,16 @@
     padding: 16px;
 
     button {
-      margin: 0 6px;
+      margin: 6px;
       padding: 6px 12px;
     }
 
     i {
       margin-right: 6px;
+    }
+
+    md-select {
+      margin: 0 6px;
     }
   }
 
