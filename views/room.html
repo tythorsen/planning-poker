@@ -10,6 +10,12 @@
 			</mg-radio-group>
 		</section>
 	</section>
+	<section layout="row" layout-sm="column" layout-align="center center">
+		<h4>
+			<span ng-show="user.voter">Please select a card:</span>
+			<span ng-hide="user.voter">You have elected not to vote</span>
+		</h4>
+	</section>
 	<section layout="row" layout-align="center center" layout-wrap>
 		<md-card ng-repeat="card in selectedDeck.cards" ng-class="{ 'selected': card.val == user.vote.val }" class="choosable" ng-click="chooseCard(card.val, card.text, card.fa)">
 			<md-card-content>
@@ -45,5 +51,18 @@
 	<section class="leader-actions" ng-show="user.leader" layout="row" layout-align="center center" layout-wrap>
 		<md-button class="md-primary md-raised" ng-click="reveal()"><i class="fa fa-search"></i> Reveal</md-button>
 		<md-button class="md-raised" ng-click="reset()"><i class="fa fa-undo"></i> Reset</md-button>
+	</section>
+	<section ng-show="room.reveal" layout="row" layout-align="center center" layout-wrap>
+		<h3>Vote Results: {{ room.results.consensusLevel }}</h3>
+	</section>
+	<section ng-show="room.reveal" layout="row" layout-align="center center" layout-wrap>
+		<md-card ng-repeat="card in room.results.cards">
+			<md-card-content>
+				<p>
+					<span ng-show="card.fa"><i class="fa fa-{{ card.fa }}"></i></span>
+					<span ng-hide="card.fa">{{ card.text }}</span>
+				</p>
+			</md-card-content>
+		</md-card>
 	</section>
 </md-content>

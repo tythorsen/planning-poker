@@ -4,29 +4,6 @@
   var PlanningPoker = namespace("Thorsent.PlanningPoker");
   extend(PlanningPoker, {
 
-    getBestGuess: function(users, deck) {
-      //console.log(users, deck);
-      var voteMap = this.mapVotes(users);
-      var totalVotes = 0;
-      var bestGuesses = [];
-      var max = 0;
-
-      angular.forEach(voteMap, function(voteCount, vote) {
-        totalVotes += voteCount;
-        if (voteCount > max) {
-          bestGuesses = [vote];
-          max = voteCount;
-        } else if (voteCount === max) {
-          bestGuesses.push(vote);
-        }
-      });
-
-      return {
-        consensusLevel: this.getConsensusLevel(bestGuesses, max/totalVotes),
-        guesses: bestGuesses
-      };
-    },
-
     getConsensusLevel: function(bestGuesses, consensusPercentage) {
       if (bestGuesses.length !== 1) {
         return "Too Close To Call";
@@ -41,15 +18,40 @@
       }
     },
 
+    getResults: function(users, deck) {
+      var voteMap = this.mapVotes(users);
+      var totalVotes = 0;
+      var bestGuesses = [];
+      var max = 0;
+
+      angular.forEach(voteMap, function(voteObj, vote) {
+        totalVotes += voteObj.count;
+        if (voteObj.count > max) {
+          bestGuesses = [voteObj.card];
+          max = voteObj.count;
+        } else if (voteObj.count === max) {
+          bestGuesses.push(voteObj.card);
+        }
+      });
+
+      return {
+        consensusLevel: this.getConsensusLevel(bestGuesses, max/totalVotes),
+        cards: bestGuesses
+      };
+    },
+
     mapVotes: function(users) {
       var voteMap = {};
 
       angular.forEach(users, function(user, key) {
         if (user.vote) {
           if (voteMap[user.vote.text]) {
-            voteMap[user.vote.text]++;
+            voteMap[user.vote.text].count++;
           } else {
-            voteMap[user.vote.text] = 1;
+            voteMap[user.vote.text] = {
+              card: user.vote,
+              count: 1
+            };
           }
         }
       });
@@ -179,6 +181,7 @@
       };
 
       $scope.reveal = function() {
+        $scope.room.results = PlanningPoker.getResults($scope.room.users, $scope.selectedDeck);
         $scope.room.reveal = true;
         $scope.room.updatedAt = Firebase.ServerValue.TIMESTAMP;
         $scope.room.$save();
@@ -190,10 +193,6 @@
 
       $scope.$watch("room.deckIndex", function() {
         $scope.selectedDeck = CardDecks[$scope.room.deckIndex];
-      });
-
-      $scope.$watch("room.users", function() {
-        PlanningPoker.getBestGuess($scope.room.users, $scope.selectedDeck);
       });
 
       var roomId = $routeParams.roomId;
@@ -220,6 +219,7 @@
           $scope.room.users[user].vote = null;
         }
         $scope.room.reveal = false;
+        $scope.room.results = null;
       }
 
       function tearDown() {
