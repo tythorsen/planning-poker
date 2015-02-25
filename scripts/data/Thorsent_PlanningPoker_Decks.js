@@ -213,36 +213,32 @@
 	      ]
 	    },
 	    {
-	      name: "Lunch Plans",
+	      name: "Charities",
+	      type: "nominal",
 	      cards: [
 	        {
-	          text: "Pizza",
+	          text: "MN Armed Forces",
 	          val: 1
 	        },
 	        {
-	          text: "Asian",
+	          text: "Humane Society",
 	          val: 2
 	        },
 	        {
-	          text: "Burgers",
+	          text: "Pride in Living",
 	          val: 3
 	        },
 	        {
-	          text: "Sandwiches",
+	          text: "Second Harvest",
 	          val: 4
 	        },
 	        {
-	          text: "Greek",
+	          text: "Conservation MN",
 	          val: 5
 	        },
 	        {
-	          text: "?",
-	          val: -1
-	        },
-	        {
-	          text: "coffee",
-	          val: -2,
-	          fa: "coffee"
+	          text: "Leonardo's Basement",
+	          val: 6
 	        }
 	      ]
 	    }
