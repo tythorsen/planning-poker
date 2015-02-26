@@ -217,6 +217,41 @@
 	      ]
 	    },
 	    {
+	      name: "Lunch Plans",
+	      type: "nominal",
+	      cards: [
+	        {
+	          text: "Pizza",
+	          val: 1
+	        },
+	        {
+	          text: "Asian",
+	          val: 2
+	        },
+	        {
+	          text: "Burgers",
+	          val: 3
+	        },
+	        {
+	          text: "Sandwiches",
+	          val: 4
+	        },
+	        {
+	          text: "Greek",
+	          val: 5
+	        },
+	        {
+	          text: "?",
+	          val: -1
+	        },
+	        {
+	          text: "coffee",
+	          val: -2,
+	          fa: "coffee"
+	        }
+	      ]
+	    },
+	    {
 	      name: "Charities",
 	      type: "nominal",
 	      cards: [
