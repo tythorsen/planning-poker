@@ -223,7 +223,7 @@
 
       $scope.share = function() {
         document.getElementById("share").blur();
-        window.prompt("Invite other to the room by sharing this link:", window.location);
+        window.prompt("Invite others to the room by sharing this link:", window.location);
       };
 
       $scope.reset = function() {
