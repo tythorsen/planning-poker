@@ -6,13 +6,14 @@
 		Decks: [
 	    {
 	      name: "Mountain Goat",
+	      type: "ordinal",
 	      cards: [
 	        {
 	          text: "0",
 	          val: 0
 	        },
 	        {
-	          text: "1/2",
+	          text: ".5",
 	          val: 0.5
 	        },
 	        {
@@ -64,6 +65,7 @@
 	    },
 	    {
 	      name: "Fibonacci",
+	      type: "ordinal",
 	      cards: [
 	        {
 	          text: "0",
@@ -122,6 +124,7 @@
 	    },
 	    {
 	      name: "Sequential",
+	      type: "ordinal",
 	      cards: [
 	        {
 	          text: "0",
@@ -180,6 +183,7 @@
 	    },
 	    {
 	      name: "T-Shirt",
+	      type: "ordinal",
 	      cards: [
 	        {
 	          text: "XS",

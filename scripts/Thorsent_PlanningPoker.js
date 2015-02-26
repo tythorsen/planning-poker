@@ -18,8 +18,27 @@
       }
     },
 
+    getMedianVote: function(users) {
+      var voteMap = this.mapVotesOrdinal(users);
+      if (voteMap.length === 0) {
+        return [];
+      } else if (voteMap.length % 2 === 0) {
+        return [voteMap[voteMap.length/2]];
+      } else {
+        return [voteMap[Math.floor(voteMap.length/2)]];
+      }
+    },
+
     getResults: function(users, deck) {
-      var voteMap = this.mapVotes(users);
+      if (deck.type === "ordinal") {
+        return this.getResultsOrdinal(users);
+      } else {
+        return this.getResultsNominal(users);
+      }
+    },
+
+    getResultsNominal: function(users) {
+      var voteMap = this.mapVotesNominal(users);
       var totalVotes = 0;
       var bestGuesses = [];
       var max = 0;
@@ -40,7 +59,14 @@
       };
     },
 
-    mapVotes: function(users) {
+    getResultsOrdinal: function(users) {
+      return {
+        consensusLevel: "Best Guess (Median)",
+        cards: this.getMedianVote(users)
+      };
+    },
+
+    mapVotesNominal: function(users) {
       var voteMap = {};
 
       angular.forEach(users, function(user, key) {
@@ -53,6 +79,26 @@
               count: 1
             };
           }
+        }
+      });
+
+      return voteMap;
+    },
+
+    mapVotesOrdinal: function(users) {
+      var voteMap = [];
+
+      angular.forEach(users, function(user, key) {
+        if (user.vote && user.vote.val >= 0) {
+          voteMap.push(user.vote);
+        }
+      });
+
+      voteMap.sort(function(a, b) {
+        if (a.val <= b.val) {
+          return -1;
+        } else {
+          return 1;
         }
       });
 
