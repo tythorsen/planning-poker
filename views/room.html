@@ -1,17 +1,21 @@
 <md-content>
-	<section layout="row" layout-sm="column" layout-align="space-around center">
+	<section layout="row" layout-sm="column" layout-align="center center">
 		<h1>Room: {{ room.$id }}</h1>
-		<section ng-show="user.leader" layout="row" layout-sm="column" layout-align="center center">
-			<p>Choose a Card Deck:</p>
-			<md-radio-group ng-model="room.deckIndex" ng-change="changeDeck()">
-				<md-radio-button ng-repeat="deck in cardDecks" ng-value="$index" aria-label="{{ deck.name }}">
-					{{ deck.name }}
-				</md-radio-button>
-			</mg-radio-group>
-		</section>
+		<md-button id="share" class="md-fab md-warn md-hue-3 share" ng-click="share()" aria-label="Invite">
+			<md-tooltip>
+        Invite
+      </md-tooltip>
+			<i class="fa fa-lg fa-share-square-o"></i>
+		</md-button>
+	</section>
+	<section layout="row" layout-sm="column" layout-align="center center">
+		<h4>
+			<span ng-show="user.voter">Please select a card:</span>
+			<span ng-hide="user.voter">You have elected not to vote</span>
+		</h4>
 	</section>
 	<section layout="row" layout-align="center center" layout-wrap>
-		<md-card ng-repeat="card in selectedDeck" ng-class="{ 'selected': card.val == user.vote.val }" class="choosable" ng-click="chooseCard(card.val, card.text, card.fa)">
+		<md-card ng-repeat="card in selectedDeck.cards" ng-class="{ 'selected': card.val == user.vote.val }" class="choosable" ng-click="chooseCard(card.val, card.text, card.fa)">
 			<md-card-content>
 				<p>
 					<span ng-show="card.fa"><i class="fa fa-{{ card.fa }}"></i></span>
@@ -21,7 +25,7 @@
 		</md-card>
 	</section>
 	<section layout="row" layout-sm="column" layout-align="center center">
-		<md-checkbox ng-model="user.voter" ng-change="toggleVoter()" aria-label="User is Voter">
+		<md-checkbox ng-model="user.voter" ng-change="toggleVoter()" aria-label="User is Voter" class="md-primary">
 			<span ng-show="user.voter">You are a voter</span>
 			<span ng-hide="user.voter">You are not a voter</span>
 		</md-checkbox>
@@ -42,8 +46,25 @@
 			</md-card-content>
 		</md-card>
 	</section>
-	<section class="leader-actions" ng-show="user.leader" layout="row" layout-align="center center" layout-wrap>
-		<md-button class="md-primary md-raised" ng-click="reveal()"><i class="fa fa-search"></i> Reveal</md-button>
-		<md-button class="md-raised" ng-click="reset()"><i class="fa fa-undo"></i> Reset</md-button>
+	<section class="leader-actions" ng-show="user.leader" layout="row" layout-sm="column" layout-align="center center">
+		<md-button id="reveal" class="md-primary md-raised" ng-click="reveal()"><i class="fa fa-search"></i> Reveal</md-button>
+		<md-button id="reset" class="md-raised" ng-click="reset()"><i class="fa fa-undo"></i> Reset</md-button>
+		<md-select ng-model="room.deckIndex" ng-change="changeDeck()">
+			<md-select-label>Choose a Card Deck</md-select-label>
+  		<md-option ng-value="$index" ng-repeat="deck in cardDecks">{{ deck.name }}</md-option>
+		</md-select>
+	</section>
+	<section ng-show="room.reveal" layout="row" layout-align="center center" layout-wrap>
+		<h3>Vote Results: {{ room.results.consensusLevel }}</h3>
+	</section>
+	<section ng-show="room.reveal" layout="row" layout-align="center center" layout-wrap>
+		<md-card ng-repeat="card in room.results.cards">
+			<md-card-content>
+				<p>
+					<span ng-show="card.fa"><i class="fa fa-{{ card.fa }}"></i></span>
+					<span ng-hide="card.fa">{{ card.text }}</span>
+				</p>
+			</md-card-content>
+		</md-card>
 	</section>
 </md-content>

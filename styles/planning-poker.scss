@@ -7,15 +7,20 @@
   }
 
   md-toolbar .md-toolbar-tools .md-button,
-  md-toolbar .md-toolbar-tools .md-button:hover {
+  md-toolbar .md-toolbar-tools .md-button:hover,
+  md-toolbar .md-toolbar-tools .md-button:focus  {
     box-shadow: none;
     border: none;
     transform: none;
     -webkit-transform: none;
   }
 
-  .thorsent-home md-icon {
+  .thorsent-home img {
     margin: 10px;
+  }
+
+  .md-button.share {
+    margin: 0 16px;
   }
 
   md-card {
@@ -59,12 +64,16 @@
     padding: 16px;
 
     button {
-      margin: 0 6px;
+      margin: 6px;
       padding: 6px 12px;
     }
 
     i {
       margin-right: 6px;
+    }
+
+    md-select {
+      margin: 0 6px;
     }
   }
 
