@@ -46,6 +46,9 @@
 			</md-card-content>
 		</md-card>
 	</section>
+	<section class="vote-completion" ng-show="user.leader">
+		<md-progress-linear md-mode="determinate" ng-value="voteCompletion"></md-progress-linear>
+	</section>
 	<section class="leader-actions" ng-show="user.leader" layout="row" layout-sm="column" layout-align="center center">
 		<md-button id="reveal" class="md-primary md-raised" ng-click="reveal()"><i class="fa fa-search"></i> Reveal</md-button>
 		<md-button id="reset" class="md-raised" ng-click="reset()"><i class="fa fa-undo"></i> Reset</md-button>
