@@ -7,7 +7,8 @@
   }
 
   md-toolbar .md-toolbar-tools .md-button,
-  md-toolbar .md-toolbar-tools .md-button:hover {
+  md-toolbar .md-toolbar-tools .md-button:hover,
+  md-toolbar .md-toolbar-tools .md-button:focus  {
     box-shadow: none;
     border: none;
     transform: none;
@@ -16,6 +17,10 @@
 
   .thorsent-home img {
     margin: 10px;
+  }
+
+  .md-button.share {
+    margin: 0 16px;
   }
 
   md-card {

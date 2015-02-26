@@ -1,6 +1,12 @@
 <md-content>
 	<section layout="row" layout-sm="column" layout-align="center center">
 		<h1>Room: {{ room.$id }}</h1>
+		<md-button id="share" class="md-fab md-warn md-hue-3 share" ng-click="share()" aria-label="Invite">
+			<md-tooltip>
+        Invite
+      </md-tooltip>
+			<i class="fa fa-lg fa-share-square-o"></i>
+		</md-button>
 	</section>
 	<section layout="row" layout-sm="column" layout-align="center center">
 		<h4>
@@ -41,8 +47,8 @@
 		</md-card>
 	</section>
 	<section class="leader-actions" ng-show="user.leader" layout="row" layout-sm="column" layout-align="center center">
-		<md-button class="md-primary md-raised" ng-click="reveal()"><i class="fa fa-search"></i> Reveal</md-button>
-		<md-button class="md-raised" ng-click="reset()"><i class="fa fa-undo"></i> Reset</md-button>
+		<md-button id="reveal" class="md-primary md-raised" ng-click="reveal()"><i class="fa fa-search"></i> Reveal</md-button>
+		<md-button id="reset" class="md-raised" ng-click="reset()"><i class="fa fa-undo"></i> Reset</md-button>
 		<md-select ng-model="room.deckIndex" ng-change="changeDeck()">
 			<md-select-label>Choose a Card Deck</md-select-label>
   		<md-option ng-value="$index" ng-repeat="deck in cardDecks">{{ deck.name }}</md-option>

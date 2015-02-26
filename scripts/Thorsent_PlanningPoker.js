@@ -113,7 +113,8 @@
 
     .config(["$mdThemingProvider", function($mdThemingProvider) {
       $mdThemingProvider.theme('default')
-        .primaryPalette('blue');
+        .primaryPalette('blue')
+        .warnPalette('grey');
     }])
 
     .config(['$routeProvider', function($routeProvider) {
@@ -220,10 +221,16 @@
         }
       };
 
+      $scope.share = function() {
+        document.getElementById("share").blur();
+        window.prompt("Invite other to the room by sharing this link:", window.location);
+      };
+
       $scope.reset = function() {
         resetVotes();
         $scope.room.updatedAt = Firebase.ServerValue.TIMESTAMP;
         $scope.room.$save();
+        document.getElementById("reset").blur();
       };
 
       $scope.reveal = function() {
@@ -231,6 +238,7 @@
         $scope.room.reveal = true;
         $scope.room.updatedAt = Firebase.ServerValue.TIMESTAMP;
         $scope.room.$save();
+        document.getElementById("reveal").blur();
       };
 
       $scope.toggleVoter = function() {
