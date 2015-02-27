@@ -4,6 +4,26 @@
   var PlanningPoker = namespace("Thorsent.PlanningPoker");
   extend(PlanningPoker, {
 
+    calculateVoteCompletion: function(users) {
+      var voteCount = 0;
+      var voterCount = 0;
+
+      angular.forEach(users, function(user, key) {
+        if (user.voter) {
+          voterCount++;
+          if (user.vote) {
+            voteCount++;
+          }
+        }
+      });
+
+      if (voterCount) {
+        return voteCount * 100 / voterCount;
+      } else {
+        return 0;
+      }
+    },
+
     getConsensusLevel: function(bestGuesses, consensusPercentage) {
       if (bestGuesses.length !== 1) {
         return "Too Close To Call";
@@ -249,6 +269,10 @@
         $scope.selectedDeck = CardDecks[$scope.room.deckIndex];
       });
 
+      $scope.$watch("room.users", function() {
+        $scope.voteCompletion = PlanningPoker.calculateVoteCompletion($scope.room.users);
+      });
+
       var roomId = $routeParams.roomId;
       var uuid = $rootScope.uuid;
       RoomHelper.checkIfRoomExists(roomId).then(function(exists) {
@@ -262,6 +286,7 @@
           $scope.user = RoomHelper.getUser(roomId, uuid);
           $scope.cardDecks = CardDecks;
           $scope.selectedDeckIndex = 0;
+          $scope.voteCompletion = 0;
           $scope.selectedDeck = CardDecks[$scope.selectedDeckIndex].cards;
         } else {
           $location.path("/");
