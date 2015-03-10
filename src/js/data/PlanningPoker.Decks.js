@@ -1,8 +1,8 @@
-(function(window, undefined) {
+(function(window, angular, undefined) {
   "use-strict";
 
-	var Thorsent_PlanningPoker = namespace("Thorsent.PlanningPoker");
-	extend(Thorsent_PlanningPoker, {
+	var PlanningPoker = namespace("ATS.PlanningPoker");
+	angular.extend(PlanningPoker, {
 		Decks: [
 	    {
 	      name: "Mountain Goat",
@@ -283,4 +283,4 @@
 	    }
 	  ]
 	});
- })(window);
+ })(window, window.angular);

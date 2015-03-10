@@ -15,9 +15,7 @@ module.exports = function(config) {
 
     // list of files / patterns to load in the browser
     files: [
-      'scripts/Thorsent.js',
-      'scripts/data/Thorsent_PlanningPoker_Decks.js',
-      'scripts/tests/Thorsent_Tests.js'
+      'tests/unit/UnitTests.js'
     ],
 
 

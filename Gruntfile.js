@@ -4,6 +4,23 @@ module.exports = function(grunt) {
     
     pkg: grunt.file.readJSON('package.json'),
     
+    concat: {
+      dist: {
+        src: [
+          'src/js/polyfill/window.namespace.js',
+          'src/js/App.js',
+          'src/js/PlanningPoker.js',
+          'src/js/data/PlanningPoker.Decks.js',
+          'src/js/config/Theme.js',
+          'src/js/config/Routes.js',
+          'src/js/factory/RoomHelper.js',
+          'src/js/controller/LandingCtrl.js',
+          'src/js/controller/RoomCtrl.js'
+        ],
+        dest: 'src/temp/<%= pkg.name %>.js'
+      }
+    },
+
     connect: {
       server: {
         options: {
@@ -24,7 +41,7 @@ module.exports = function(grunt) {
           jQuery: true
         },
       },
-      all: ['scripts/*.js']
+      all: ['src/js/**/*.js']
     },
 
     karma: {
@@ -62,13 +79,10 @@ module.exports = function(grunt) {
     
     uglify: {
       dist: {
-        files: [{
-          expand: true,
-          cwd: "scripts",
-          src: "*.js",
-          dest: "scripts/dist",
-          ext: ".min.js"
-        }]
+        files: {
+          'dist/<%= pkg.name %>.min.js': 'src/temp/<%= pkg.name %>.js'
+        },
+        screwIE8: true
       }
     },
 
@@ -78,20 +92,21 @@ module.exports = function(grunt) {
         tasks: ['sass:dev']
       },
       js: {
-        files: ['scripts/*.js', 'scripts/data/*.js', 'scripts/tests/*.js'],
-        tasks: [ 'jshint', 'karma', 'uglify']
+        files: ['src/js/**/*.js'],
+        tasks: [ 'jshint', 'karma', 'concat', 'uglify']
       }
     }
   });
 
+  grunt.loadNpmTasks('grunt-contrib-concat');
+  grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-contrib-jshint');
   grunt.loadNpmTasks('grunt-contrib-sass');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
-  grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-karma');
 
-  grunt.registerTask('default', ['jshint', 'karma', 'uglify', 'sass:dev', 'watch']);
-  grunt.registerTask('prod', ['jshint', 'karma', 'uglify', 'sass:dist']);
+  grunt.registerTask('default', ['jshint', 'karma', 'concat', 'uglify', 'sass:dev', 'watch']);
+  grunt.registerTask('prod', ['jshint', 'karma', 'concat', 'uglify', 'sass:dist']);
   grunt.registerTask('serve', ['connect']);
 };
