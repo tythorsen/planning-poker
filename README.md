@@ -2,6 +2,14 @@
 
 A free, online agile estimation tool for distributed or colocated project teams.
 
+## Logging Issues
+
+Please feel free to use the project's [issues page][issues] to log bugs, ask questions, or request new features.
+
+We are also happy to announce that we've been granted an open source license for JIRA. If you are planning on contributing, please make sure you have an Atlassian Cloud account as we will be using our [JIRA][jira] instance for all project tracking functions.
+
+![Atlassian Logo][atlassian]
+
 ## Installing Locally
 
 #### Installing all project code and dependencies
@@ -24,5 +32,9 @@ A free, online agile estimation tool for distributed or colocated project teams.
 1. Application should now be available at [localhost:4000][local]
 
 
+[issues]: https://github.com/thorsenty/planning-poker/issues
+[jira]: https://thorsent.atlassian.net/browse/PLAN
 [node]: http://nodejs.org/
 [local]: http://localhost:4000/
+
+[atlassian]: assets/images/atlassian-rgb-navy-small.png
