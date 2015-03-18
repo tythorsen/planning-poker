@@ -8,7 +8,7 @@ http://www.thorsent.com/planning-poker
 
 Please feel free to use the project's [issues page][issues] to log bugs, ask questions, or request new features.
 
-We are also happy to announce that we've been granted an open source license for JIRA. If you are planning on contributing, please make sure you have an Atlassian Cloud account as we will be using our [JIRA][jira] instance for all project tracking functions.
+We are also happy to announce that we've been granted an open source license for JIRA. If you are planning on contributing, please register an Atlassian Cloud account on our [JIRA][jira] instance as we will be using it for all project tracking functions.
 
 ![Atlassian Logo][atlassian]
 
