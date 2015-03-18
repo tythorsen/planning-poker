@@ -2,6 +2,8 @@
 
 A free, online agile estimation tool for distributed or colocated project teams.
 
+http://www.thorsent.com/planning-poker
+
 ## Logging Issues
 
 Please feel free to use the project's [issues page][issues] to log bugs, ask questions, or request new features.
