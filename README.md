@@ -1,6 +1,6 @@
 # Planning Poker
 
-A free, online agile estimation tool for distributed or colocated project teams.
+A free, online agile estimation tool for distributed or co-located project teams.
 
 http://www.thorsent.com/planning-poker
 
