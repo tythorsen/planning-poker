@@ -1,5 +1,9 @@
 .planning-poker {
 
+  .md-toolbar-tools {
+    padding: 0 32px;
+  }
+
   a {
     color: #2196F3;
     text-decoration: none;
@@ -83,5 +87,9 @@
 
   .copyright {
     color: rgba(0,0,0,0.26);
+
+    p {
+      margin: 0;
+    }
   }
 }

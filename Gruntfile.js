@@ -7,17 +7,32 @@ module.exports = function(grunt) {
     concat: {
       dist: {
         src: [
-          'src/js/polyfill/window.namespace.js',
-          'src/js/App.js',
-          'src/js/PlanningPoker.js',
-          'src/js/data/PlanningPoker.Decks.js',
-          'src/js/config/Theme.js',
-          'src/js/config/Routes.js',
-          'src/js/factory/RoomHelper.js',
-          'src/js/controller/LandingCtrl.js',
-          'src/js/controller/RoomCtrl.js'
+          'modules/sharedServices/SharedServices.js',
+          'modules/sharedServices/FirebaseService.js',
+          'modules/landing/Landing.js',
+          'modules/landing/LandingController.js',
+          'modules/room/Room.js',
+          'modules/room/ResultsService.js',
+          'modules/room/DeckFactory.js',
+          'modules/room/RoomController.js',
+          'modules/App.js'
         ],
-        dest: 'src/temp/<%= pkg.name %>.js'
+        dest: 'temp/<%= pkg.name %>.js'
+      },
+      vendor: {
+        src: [
+          'vendor/js/hammer-2.0.4.min.js',
+          'vendor/js/angular-1.3.14.min.js',
+          'vendor/js/angular-resource-1.3.14.min.js',
+          'vendor/js/angular-route-1.3.14.min.js',
+          'vendor/js/angular-animate-1.3.14.min.js',
+          'vendor/js/angular-aria-1.3.14.min.js',
+          'vendor/js/angular-mocks-1.3.14.js',
+          'vendor/js/angular-material-0.8.3.min.js',
+          'vendor/js/firebase-2.0.4.min.js',
+          'vendor/js/angularfire-0.8.0.min.js'
+        ],
+        dest: 'dist/vendor.min.js'
       }
     },
 
@@ -41,7 +56,7 @@ module.exports = function(grunt) {
           jQuery: true
         },
       },
-      all: ['src/js/**/*.js']
+      all: ['modules/**/*.js']
     },
 
     karma: {
@@ -80,7 +95,7 @@ module.exports = function(grunt) {
     uglify: {
       dist: {
         files: {
-          'dist/<%= pkg.name %>.min.js': 'src/temp/<%= pkg.name %>.js'
+          'dist/<%= pkg.name %>.min.js': 'temp/<%= pkg.name %>.js'
         },
         screwIE8: true
       }
@@ -92,8 +107,8 @@ module.exports = function(grunt) {
         tasks: ['sass:dev']
       },
       js: {
-        files: ['src/js/**/*.js'],
-        tasks: [ 'jshint', 'karma', 'concat', 'uglify']
+        files: ['modules/**/*.js'],
+        tasks: [ 'jshint', 'concat', 'uglify']
       }
     }
   });
@@ -106,7 +121,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-karma');
 
-  grunt.registerTask('default', ['jshint', 'karma', 'concat', 'uglify', 'sass:dev', 'watch']);
-  grunt.registerTask('prod', ['jshint', 'karma', 'concat', 'uglify', 'sass:dist']);
+  grunt.registerTask('default', ['jshint', 'concat', 'uglify', 'karma', 'sass:dev', 'watch']);
+  grunt.registerTask('prod', ['jshint', 'concat', 'uglify', 'karma', 'sass:dist']);
   grunt.registerTask('serve', ['connect']);
 };

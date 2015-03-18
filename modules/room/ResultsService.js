@@ -1,10 +1,9 @@
 (function(window, angular, undefined) {
   "use-strict";
 
-  var PlanningPoker = namespace("ATS.PlanningPoker");
-  angular.extend(PlanningPoker, {
+  angular.module("ATS.Room").service('ResultsService', function() {
     
-    calculateVoteCompletion: function(users) {
+    this.calculateVoteCompletion = function(users) {
       var voteCount = 0;
       var voterCount = 0;
 
@@ -22,11 +21,11 @@
       } else {
         return 0;
       }
-    },
+    };
 
-    getConsensusLevel: function(bestGuesses, consensusPercentage) {
+    this.getConsensusLevel = function(bestGuesses, consensusPercentage) {
       if (bestGuesses.length !== 1) {
-        return "Too Close To Call";
+        return "Tie";
       } else if (consensusPercentage === 1) {
         return "Unanimous";
       } else if (consensusPercentage >= 0.75) {
@@ -36,9 +35,9 @@
       } else {
         return "Plurality";
       }
-    },
+    };
 
-    getMedianVote: function(users) {
+    this.getMedianVote = function(users) {
       var voteMap = this.mapVotesOrdinal(users);
       if (voteMap.length === 0) {
         return [];
@@ -47,17 +46,17 @@
       } else {
         return [voteMap[Math.floor(voteMap.length/2)]];
       }
-    },
+    };
 
-    getResults: function(users, deck) {
+    this.getResults =function(users, deck) {
       if (deck.type === "ordinal") {
         return this.getResultsOrdinal(users);
       } else {
         return this.getResultsNominal(users);
       }
-    },
+    };
 
-    getResultsNominal: function(users) {
+    this.getResultsNominal = function(users) {
       var voteMap = this.mapVotesNominal(users);
       var totalVotes = 0;
       var bestGuesses = [];
@@ -77,16 +76,16 @@
         consensusLevel: this.getConsensusLevel(bestGuesses, max/totalVotes),
         cards: bestGuesses
       };
-    },
+    };
 
-    getResultsOrdinal: function(users) {
+    this.getResultsOrdinal = function(users) {
       return {
         consensusLevel: "Best Guess (Median)",
         cards: this.getMedianVote(users)
       };
-    },
+    };
 
-    mapVotesNominal: function(users) {
+    this.mapVotesNominal = function(users) {
       var voteMap = {};
 
       angular.forEach(users, function(user, key) {
@@ -103,9 +102,9 @@
       });
 
       return voteMap;
-    },
+    };
 
-    mapVotesOrdinal: function(users) {
+    this.mapVotesOrdinal =  function(users) {
       var voteMap = [];
 
       angular.forEach(users, function(user, key) {
@@ -123,7 +122,7 @@
       });
 
       return voteMap;
-    }
+    };
   });
 
 })(window, window.angular);

@@ -1,7 +1,9 @@
 (function(window, angular, undefined) {
   "use-strict";
 
-  ATS.app.controller("RoomCtrl", ["$rootScope", "$scope", "$routeParams", "$location", "RoomHelper", function($rootScope, $scope, $routeParams, $location, RoomHelper) {
+  var firebase = new Firebase("https://sweltering-torch-73.firebaseio.com/");
+
+  angular.module("ATS.Room").controller("RoomController", ["$rootScope", "$scope", "$routeParams", "$location", "FirebaseService", "ResultsService", "DeckFactory", function($rootScope, $scope, $routeParams, $location, FirebaseService, ResultsService, DeckFactory) {
       
     $scope.changeDeck = function() {
       resetVotes();
@@ -33,7 +35,7 @@
     };
 
     $scope.reveal = function() {
-      $scope.room.results =ATS.PlanningPoker.getResults($scope.room.users, $scope.selectedDeck);
+      $scope.room.results = ResultsService.getResults($scope.room.users, $scope.selectedDeck);
       $scope.room.reveal = true;
       $scope.room.updatedAt = Firebase.ServerValue.TIMESTAMP;
       $scope.room.$save();
@@ -45,28 +47,28 @@
     };
 
     $scope.$watch("room.deckIndex", function() {
-      $scope.selectedDeck = ATS.PlanningPoker.Decks[$scope.room.deckIndex];
+      $scope.selectedDeck = $scope.cardDecks[$scope.room.deckIndex];
     });
 
     $scope.$watch("room.users", function() {
-      $scope.voteCompletion = ATS.PlanningPoker.calculateVoteCompletion($scope.room.users);
+      $scope.voteCompletion = ResultsService.calculateVoteCompletion($scope.room.users);
     });
 
     var roomId = $routeParams.roomId;
     var uuid = $rootScope.uuid;
-    RoomHelper.checkIfRoomExists(roomId).then(function(exists) {
+    FirebaseService.checkIfRoomExists(roomId).then(function(exists) {
       if (exists) {
-        $scope.room = RoomHelper.getRoom(roomId);
+        $scope.room = FirebaseService.getRoom(roomId);
         if (!uuid) {
-          uuid = RoomHelper.generateUserId();
+          uuid = FirebaseService.generateUserId();
           var leader = false;
-          RoomHelper.newUser(roomId, uuid, leader);
+          FirebaseService.newUser(roomId, uuid, leader);
         }
-        $scope.user = RoomHelper.getUser(roomId, uuid);
-        $scope.cardDecks = ATS.PlanningPoker.Decks;
+        $scope.user = FirebaseService.getUser(roomId, uuid);
+        $scope.cardDecks = DeckFactory.getDecks();
         $scope.selectedDeckIndex = 0;
         $scope.voteCompletion = 0;
-        $scope.selectedDeck = ATS.PlanningPoker.Decks[$scope.selectedDeckIndex].cards;
+        $scope.selectedDeck = $scope.cardDecks[$scope.selectedDeckIndex].cards;
       } else {
         $location.path("/");
       }
@@ -82,9 +84,9 @@
 
     function tearDown() {
       if ($scope.user.leader) {
-        ATS.firebase.child('rooms').child($scope.room.$id).remove();
+        FirebaseService.destroyRoom($scope.room.$id);
       } else {
-        ATS.firebase.child('rooms').child($scope.room.$id).child('users').child($scope.user.$id).remove();
+        FirebaseService.destroyUser($scope.room.$id, $scope.user.$id);
       }
       $rootScope.uuid = null;
     }
