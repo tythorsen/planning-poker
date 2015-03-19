@@ -13,11 +13,15 @@
 
     $scope.chooseCard = function(cardVal, cardText, cardFA) {
       if ($scope.user.voter) {
-        $scope.user.vote = {
-          val: cardVal,
-          text: cardText,
-          fa: cardFA || "" 
-        };
+        if ($scope.user.vote && $scope.user.vote.val === cardVal) {
+          $scope.user.vote = null;
+        } else {
+          $scope.user.vote = {
+            val: cardVal,
+            text: cardText,
+            fa: cardFA || "" 
+          };
+        }
         $scope.user.$save();
       }
     };
