@@ -5,14 +5,17 @@
       <section layout="row" layout-align="start center">
         <md-input-container>
           <label>Deck Name</label>
-          <input id="name" ng-model="deck.name" type="text">
+          <input id="name" ng-model="deck.name" type="text" required>
         </md-input-container>
       </section>
       <section layout="row" layout-align="start center" layout-wrap ng-show="hasCards()">
         <md-card ng-repeat="card in deck.cards">
+          <md-button ng-click="remove(card)" aria-label="close">
+            <i class="fa fa-times"></i>
+          </md-button>
           <md-card-content>
             <md-input-container>
-              <input tabindex="0" required ng-model="card.text" type="text" maxlength="24">
+              <input ng-model="card.text" type="text" maxlength="24" required>
             </md-input-container>
           </md-card-content>
         </md-card>
@@ -23,20 +26,20 @@
     </div>
   </md-content>
   <div class="md-actions" layout="row">
-    <md-button class="fab-flat" ng-click="addCard()" aria-label="Add Card" ng-show="canAddCard()">
+    <md-button class="md-fab fab-flat" ng-click="addCard()" aria-label="Add Card" ng-show="canAddCard()">
       <md-tooltip md-direction="top" md-delay="1000">
         Add Card
       </md-tooltip>
       <i class="fa fa-lg fa-plus"></i>
     </md-button>
     <span flex></span>
-    <md-button class="fab-flat md-warn" ng-click="cancel()" aria-label="Discard Changes">
+    <md-button class="md-fab fab-flat md-warn" ng-click="cancel()" aria-label="Discard Changes">
       <md-tooltip md-direction="top" md-delay="1000">
         Discard Changes
       </md-tooltip>
       <i class="fa fa-lg fa-times"></i>
     </md-button>
-    <md-button id="save" class="fab-flat md-primary" ng-click="save()" aria-label="Save Deck">
+    <md-button id="save" class="md-fab fab-flat md-primary" ng-click="save()" aria-label="Save Deck">
       <md-tooltip md-direction="top" md-delay="1000">
         Save Deck
       </md-tooltip>

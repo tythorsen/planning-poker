@@ -30,8 +30,8 @@ module.exports = function(grunt) {
           'vendor/js/angular-aria-1.3.14.min.js',
           'vendor/js/angular-mocks-1.3.14.js',
           'vendor/js/angular-material-0.8.3.min.js',
-          'vendor/js/firebase-2.0.4.min.js',
-          'vendor/js/angularfire-0.8.0.min.js'
+          'vendor/js/firebase-2.2.3.min.js',
+          'vendor/js/angularfire-1.0.0.min.js'
         ],
         dest: 'dist/vendor.min.js'
       }

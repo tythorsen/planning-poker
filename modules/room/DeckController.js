@@ -11,7 +11,7 @@
         $scope.deck.cards = $scope.deck.cards || [];
         if ($scope.deck.cards.length < MAX_CARDS) {
           $scope.deck.cards.push({
-            text: "New Card",
+            text: "NewCard" + ($scope.deck.cards.length + 1).toString(),
             val: -1,
             fa: ""
           });
@@ -30,14 +30,25 @@
         return $scope.deck.cards && $scope.deck.cards.length > 0;
       };
 
-      $scope.save = function() {
-        $mdDialog.hide(scrubHashKeys($scope.deck));
+      $scope.remove = function(card) {
+        var index = $scope.deck.cards.indexOf(card);
+        $scope.deck.cards.splice(index, 1);
       };
 
-      function scrubHashKeys(deck) {
+      $scope.save = function() {
+        $mdDialog.hide(polishDeck($scope.deck));
+      };
+
+      function polishDeck(deck) {
+        var cards = [];
         angular.forEach(deck.cards, function(value, key) {
-          delete value.$$hashKey;
+          cards.push({
+            text: value.text,
+            val: angular.isNumber(value.text) ? Float.valueOf(value.text) : key,
+            fa: ""
+          });
         });
+        deck.cards = cards;
         return deck;
       }
   }]);
