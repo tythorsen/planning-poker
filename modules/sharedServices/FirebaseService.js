@@ -47,6 +47,11 @@
 
     this.newRoom = function(roomId, deckIndex) {
       $firebase(firebase.child('rooms').child(roomId)).$set({
+        customDeck: {
+          name: "Custom Deck",
+          type: "nominal",
+          cards: []
+        },
         deckIndex: deckIndex,
         reveal: false,
         updatedAt: Firebase.ServerValue.TIMESTAMP

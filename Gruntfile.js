@@ -14,6 +14,7 @@ module.exports = function(grunt) {
           'modules/room/Room.js',
           'modules/room/ResultsService.js',
           'modules/room/DeckFactory.js',
+          'modules/room/DeckController.js',
           'modules/room/RoomController.js',
           'modules/App.js'
         ],

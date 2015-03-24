@@ -1,7 +1,7 @@
 <md-content>
 	<section layout="row" layout-sm="column" layout-align="center center">
 		<h1>Room: {{ room.$id }}</h1>
-		<md-button id="share" class="md-fab md-warn md-hue-3 share" ng-click="share()" aria-label="Invite" hide show-gt-md >
+		<md-button id="share" class="fab-flat share" ng-click="share()" aria-label="Invite" hide show-gt-md >
 			<md-tooltip>
         Invite
       </md-tooltip>
@@ -23,6 +23,18 @@
 				</p>
 			</md-card-content>
 		</md-card>
+		<p class="empty-deck" ng-show="room.deckIndex == -1 && deckIsEmpty()">
+			<span ng-show="user.leader">Your custom deck is empty. Please add some cards.</span>
+			<span ng-show="!user.leader">The room leader is building a custom deck. Please wait.</span>
+		</p>
+		<span ng-show="room.deckIndex == -1 && user.leader">
+			<md-button id="edit" class="md-fab md-primary edit" ng-click="editDeck($event)" aria-label="Edit Deck">
+					<md-tooltip>
+		        Edit Deck
+		      </md-tooltip>
+					<i class="fa fa-lg fa-pencil-square-o"></i>
+				</md-button>
+			</span>
 	</section>
 	<section layout="row" layout-sm="column" layout-align="center center">
 		<md-checkbox ng-model="user.voter" ng-change="toggleVoter()" aria-label="User is Voter" class="md-primary">
@@ -55,6 +67,7 @@
 		<md-select ng-model="room.deckIndex" ng-change="changeDeck()">
 			<md-select-label>Choose a Card Deck</md-select-label>
   		<md-option ng-value="$index" ng-repeat="deck in cardDecks">{{ deck.name }}</md-option>
+  		<md-option ng-value="-1">{{ room.customDeck.name }}</md-option>
 		</md-select>
 	</section>
 	<section ng-show="room.reveal" layout="row" layout-align="center center" layout-wrap>

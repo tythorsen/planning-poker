@@ -1,5 +1,15 @@
 .planning-poker {
 
+  .md-button.md-default-theme.fab-flat {
+    height: 56px;
+    width: 56px;
+    border-radius: 50%;
+
+    .md-ripple-container {
+      border-radius: 50%;
+    }
+  }
+
   .md-toolbar-tools {
     padding: 0 32px;
   }
@@ -23,8 +33,13 @@
     margin: 10px;
   }
 
-  .md-button.share {
+  .md-button.share,
+  .md-button.edit {
     margin: 0 16px;
+  }
+
+  .empty-deck {
+    margin: 40px 0;
   }
 
   md-card {
@@ -37,6 +52,19 @@
 
       p {
         overflow: hidden;
+      }
+
+      md-input-container {
+        padding: 15px 2px 16px;
+      }
+
+      input[type='text'] {
+        transition: width 0.5s ease;
+        width: 48px;
+
+        &:focus {
+         width: 96px;
+        }
       }
     }
 
@@ -82,6 +110,20 @@
 
     md-select {
       margin: 0 6px;
+    }
+  }
+
+  &.deck-editor {
+
+    width: 80%;
+
+    .md-fab.md-button,
+    .md-fab.md-button:hover,
+    .md-fab.md-button:focus  {
+      box-shadow: none;
+      border: none;
+      transform: none;
+      -webkit-transform: none;
     }
   }
 

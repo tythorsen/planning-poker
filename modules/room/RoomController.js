@@ -3,8 +3,8 @@
 
   var firebase = new Firebase("https://sweltering-torch-73.firebaseio.com/");
 
-  angular.module("ATS.Room").controller("RoomController", ["$rootScope", "$scope", "$routeParams", "$location", "FirebaseService", "ResultsService", "DeckFactory", function($rootScope, $scope, $routeParams, $location, FirebaseService, ResultsService, DeckFactory) {
-      
+  angular.module("ATS.Room").controller("RoomController", ["$rootScope", "$scope", "$routeParams", "$location", "FirebaseService", "ResultsService", "DeckFactory", "$mdDialog", function($rootScope, $scope, $routeParams, $location, FirebaseService, ResultsService, DeckFactory, $mdDialog) {
+
     $scope.changeDeck = function() {
       resetVotes();
       $scope.room.updatedAt = Firebase.ServerValue.TIMESTAMP;
@@ -26,9 +26,29 @@
       }
     };
 
-    $scope.share = function() {
-      document.getElementById("share").blur();
-      window.prompt("Invite others to the room by sharing this link:", window.location);
+    $scope.deckIsEmpty = function() {
+      return !$scope.selectedDeck.cards || $scope.selectedDeck.cards.length === 0;
+    };
+
+    $scope.editDeck = function(ev) {
+      document.getElementById("edit").blur();
+      $mdDialog.show({
+        controller: 'DeckController',
+        clickOutsideToClose: false,
+        escapeToClose: false,
+        locals: {
+          deck: angular.copy($scope.room.customDeck)
+        },
+        templateUrl: '/modules/room/deck-editor.html',
+        targetEvent: ev,
+        onComplete: function(){ document.getElementById("name").focus(); }
+      }).then(function(deck) {
+        resetVotes();
+        $scope.room.customDeck = deck;
+        $scope.selectedDeck = deck;
+        $scope.room.updatedAt = Firebase.ServerValue.TIMESTAMP;
+        $scope.room.$save();
+      });
     };
 
     $scope.reset = function() {
@@ -46,12 +66,28 @@
       document.getElementById("reveal").blur();
     };
 
+    $scope.share = function() {
+      document.getElementById("share").blur();
+      window.prompt("Invite others to the room by sharing this link:", window.location);
+    };
+
     $scope.toggleVoter = function() {
       $scope.user.$save();
     };
 
+    $scope.$watch("room.customDeck", function() {
+      if ($scope.room.deckIndex === -1) {
+        $scope.selectedDeck = $scope.room.customDeck;
+      }
+    });
+
     $scope.$watch("room.deckIndex", function() {
-      $scope.selectedDeck = $scope.cardDecks[$scope.room.deckIndex];
+      var index = $scope.room.deckIndex;
+      if (index === -1) {
+        $scope.selectedDeck = $scope.room.customDeck;
+      } else {
+        $scope.selectedDeck = $scope.cardDecks[index];
+      }
     });
 
     $scope.$watch("room.users", function() {
