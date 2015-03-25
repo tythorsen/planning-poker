@@ -9,7 +9,7 @@
         </md-input-container>
       </section>
       <section layout="row" layout-align="start center" layout-wrap ng-show="hasCards()">
-        <md-card ng-repeat="card in deck.cards">
+        <md-card ng-repeat="card in deck.cards" class="scale-fade">
           <md-button ng-click="remove(card)" aria-label="close">
             <i class="fa fa-times"></i>
           </md-button>
