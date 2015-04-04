@@ -15,13 +15,13 @@
         controller: 'LandingController',
         templateUrl: 'modules/landing/landing.html'
       })
+      .when('/contributors', {
+        controller: 'ContributorController',
+        templateUrl: 'modules/contributor/contributor.html'
+      })
       .when('/:roomId/', {
         controller: 'RoomController',
         templateUrl: 'modules/room/room.html'
-      })
-      .when('/', {
-        controller: 'ContributorController',
-        templateUrl: 'modules/contributor/contributor.html'
       })
       .otherwise({
         redirectTo: '/'

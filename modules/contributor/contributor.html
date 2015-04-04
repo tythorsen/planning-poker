@@ -1,8 +1,12 @@
 <md-content>
   <section layout="row" layout-sm="column" layout-align="center center">
-  Ty's space
+  <ul>
+    <li ng-repeat="contributor in contributors" class="ng-scope">
+      <p>{{contributor.name}}</p>
+    </li>
+  </ul>
   </section>
   <section layout="row" layout-sm="column" layout-align="center center">
-  Alex's space
+  <div><a href="#/">Back to the landing page.</a></div>
   </section>
 </md-content>
