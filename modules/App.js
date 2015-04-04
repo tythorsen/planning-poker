@@ -6,7 +6,7 @@
   	.config(["$mdThemingProvider", function($mdThemingProvider) {
     $mdThemingProvider.theme('default')
       .primaryPalette('blue')
-      .warnPalette('grey');
+      .accentPalette('grey');
   	}])
 
   	.config(['$routeProvider', function($routeProvider) {

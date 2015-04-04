@@ -3,7 +3,7 @@
 
   var firebase = new Firebase("https://sweltering-torch-73.firebaseio.com/");
 
-  angular.module("ATS.SharedServices").service('FirebaseService', ['$q', '$firebase', function($q, $firebase) {
+  angular.module("ATS.SharedServices").service('FirebaseService', ['$q', '$firebaseObject', function($q, $firebaseObject) {
     
     this.checkIfRoomExists = function(roomId) {
       var deferred = $q.defer();
@@ -37,28 +37,37 @@
 
     this.getRoom = function(roomId) {
       var ref = firebase.child('rooms').child(roomId);
-      return $firebase(ref).$asObject();
+      return $firebaseObject(ref);
     };
 
     this.getUser = function(roomId, uuid) {
       var ref = firebase.child('rooms').child(roomId).child('users').child(uuid);
-      return $firebase(ref).$asObject();
+      return $firebaseObject(ref);
     };
 
     this.newRoom = function(roomId, deckIndex) {
-      $firebase(firebase.child('rooms').child(roomId)).$set({
+      var room = $firebaseObject(firebase.child('rooms').child(roomId));
+      angular.extend(room, {
+        customDeck: {
+          name: "Custom Deck",
+          type: "nominal",
+          cards: []
+        },
         deckIndex: deckIndex,
         reveal: false,
         updatedAt: Firebase.ServerValue.TIMESTAMP
       });
+      room.$save();
     };
 
     this.newUser = function(roomId, uuid, leader) {
-      $firebase(firebase.child('rooms').child(roomId).child('users').child(uuid)).$set({
+      var user = $firebaseObject(firebase.child('rooms').child(roomId).child('users').child(uuid));
+      angular.extend(user, {
         leader: leader,
         vote: null,
         voter: true
       });
+      user.$save();
     };
   }]);
 

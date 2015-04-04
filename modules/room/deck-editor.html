@@ -1,0 +1,49 @@
+<md-dialog aria-label="Deck Editor" class="planning-poker deck-editor">
+  <md-content class="sticky-container">
+    <md-subheader class="md-sticky-no-effect">Deck Editor</md-subheader>
+    <div class="dialog-content">
+      <section layout="row" layout-align="start center">
+        <md-input-container>
+          <label>Deck Name</label>
+          <input id="name" ng-model="deck.name" type="text" required>
+        </md-input-container>
+      </section>
+      <section layout="row" layout-align="start center" layout-wrap ng-show="hasCards()">
+        <md-card ng-repeat="card in deck.cards" class="scale-fade">
+          <md-button ng-click="remove(card)" aria-label="close">
+            <i class="fa fa-times"></i>
+          </md-button>
+          <md-card-content>
+            <md-input-container>
+              <input ng-model="card.text" type="text" maxlength="24" required>
+            </md-input-container>
+          </md-card-content>
+        </md-card>
+      </section>
+      <section layout="row" layout-align="center center" ng-show="!hasCards()">
+        <p class="empty-deck">Your custom deck is empty. <a href="javascript:void(0)" ng-click="addCard()">Add a Card.</a></p>
+      </section>
+    </div>
+  </md-content>
+  <div class="md-actions" layout="row">
+    <md-button class="md-fab fab-flat" ng-click="addCard()" aria-label="Add Card" ng-show="canAddCard()">
+      <md-tooltip md-direction="top" md-delay="1000">
+        Add Card
+      </md-tooltip>
+      <i class="fa fa-lg fa-plus"></i>
+    </md-button>
+    <span flex></span>
+    <md-button class="md-fab fab-flat md-warn" ng-click="cancel()" aria-label="Discard Changes">
+      <md-tooltip md-direction="top" md-delay="1000">
+        Discard Changes
+      </md-tooltip>
+      <i class="fa fa-lg fa-times"></i>
+    </md-button>
+    <md-button id="save" class="md-fab fab-flat md-primary" ng-click="save()" aria-label="Save Deck">
+      <md-tooltip md-direction="top" md-delay="1000">
+        Save Deck
+      </md-tooltip>
+      <i class="fa fa-lg fa-check"></i>
+    </md-button>
+  </div>
+</md-dialog>
