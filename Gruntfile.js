@@ -27,6 +27,7 @@ module.exports = function(grunt) {
         src: [
           'vendor/js/hammer-2.0.4.js',
           'vendor/js/angular-1.3.14.js',
+          'vendor/js/angular-cookies-1.3.14.js',
           'vendor/js/angular-resource-1.3.14.js',
           'vendor/js/angular-route-1.3.14.js',
           'vendor/js/angular-animate-1.3.14.js',
@@ -41,6 +42,7 @@ module.exports = function(grunt) {
         src: [
           'vendor/js/hammer-2.0.4.min.js',
           'vendor/js/angular-1.3.14.min.js',
+          'vendor/js/angular-cookies-1.3.14.min.js',
           'vendor/js/angular-resource-1.3.14.min.js',
           'vendor/js/angular-route-1.3.14.min.js',
           'vendor/js/angular-animate-1.3.14.min.js',

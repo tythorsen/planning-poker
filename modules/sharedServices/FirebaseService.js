@@ -3,7 +3,7 @@
 
   var firebase = new Firebase("https://sweltering-torch-73.firebaseio.com/");
 
-  angular.module("ATS.SharedServices").service('FirebaseService', ['$q', '$firebaseObject', function($q, $firebaseObject) {
+  angular.module("ATS.SharedServices").service('FirebaseService', ['$q', '$cookieStore', '$firebaseObject', function($q, $cookieStore, $firebaseObject) {
     
     this.checkIfRoomExists = function(roomId) {
       var deferred = $q.defer();
@@ -47,12 +47,16 @@
 
     this.newRoom = function(roomId, deckIndex) {
       var room = $firebaseObject(firebase.child('rooms').child(roomId));
-      angular.extend(room, {
-        customDeck: {
+      var customDeck = $cookieStore.get("deck");
+      if (!customDeck) {
+        customDeck = {
           name: "Custom Deck",
           type: "nominal",
           cards: []
-        },
+        };
+      }
+      angular.extend(room, {
+        customDeck: customDeck,
         deckIndex: deckIndex,
         reveal: false,
         updatedAt: Firebase.ServerValue.TIMESTAMP

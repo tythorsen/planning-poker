@@ -3,7 +3,7 @@
 
   var firebase = new Firebase("https://sweltering-torch-73.firebaseio.com/");
 
-  angular.module("ATS.Room").controller("RoomController", ["$rootScope", "$scope", "$routeParams", "$location", "FirebaseService", "ResultsService", "DeckFactory", "$mdDialog", function($rootScope, $scope, $routeParams, $location, FirebaseService, ResultsService, DeckFactory, $mdDialog) {
+  angular.module("ATS.Room").controller("RoomController", ["$rootScope", "$scope", "$routeParams", "$location", "$cookieStore", "FirebaseService", "ResultsService", "DeckFactory", "$mdDialog", function($rootScope, $scope, $routeParams, $location, $cookieStore, FirebaseService, ResultsService, DeckFactory, $mdDialog) {
 
     $scope.changeDeck = function() {
       resetVotes();
@@ -48,6 +48,8 @@
         $scope.selectedDeck = deck;
         $scope.room.updatedAt = Firebase.ServerValue.TIMESTAMP;
         $scope.room.$save();
+
+        $cookieStore.put("deck", deck);
       });
     };
 
@@ -103,7 +105,7 @@
           uuid = FirebaseService.generateUserId();
           var leader = false;
           FirebaseService.newUser(roomId, uuid, leader);
-        }
+        } 
         $scope.user = FirebaseService.getUser(roomId, uuid);
         $scope.cardDecks = DeckFactory.getDecks();
         $scope.selectedDeckIndex = 0;
