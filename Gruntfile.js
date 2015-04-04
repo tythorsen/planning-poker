@@ -75,7 +75,7 @@ module.exports = function(grunt) {
           expand: true,
           cwd: "styles",
           src: "*.scss",
-          dest: "styles/dist",
+          dest: "dist",
           ext: ".css"
         }],
         options: {
@@ -87,7 +87,7 @@ module.exports = function(grunt) {
           expand: true,
           cwd: "styles",
           src: "*.scss",
-          dest: "styles/dist",
+          dest: "dist",
           ext: ".css"
         }],
         options: {
