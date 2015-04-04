@@ -39,7 +39,7 @@
         locals: {
           deck: angular.copy($scope.room.customDeck)
         },
-        templateUrl: '/modules/room/deck-editor.html',
+        templateUrl: 'modules/room/deck-editor.html',
         targetEvent: ev,
         onComplete: function(){ document.getElementById("name").focus(); }
       }).then(function(deck) {
