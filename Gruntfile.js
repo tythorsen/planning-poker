@@ -1,9 +1,9 @@
 module.exports = function(grunt) {
 
   grunt.initConfig({
-    
+
     pkg: grunt.file.readJSON('package.json'),
-    
+
     concat: {
       dist: {
         src: [
@@ -16,6 +16,9 @@ module.exports = function(grunt) {
           'modules/room/DeckFactory.js',
           'modules/room/DeckController.js',
           'modules/room/RoomController.js',
+          'modules/contributor/Contributor.js',
+          'modules/contributor/ContributorController.js',
+          'modules/contributor/ContributorFactory.js',
           'modules/App.js'
         ],
         dest: 'temp/<%= pkg.name %>.js'
@@ -92,7 +95,7 @@ module.exports = function(grunt) {
         }
       }
     },
-    
+
     uglify: {
       dist: {
         files: {

@@ -1,8 +1,8 @@
 (function(window, angular, undefined) {
   "use-strict";
 
-  angular.module('ATS', ['ngRoute', 'ngMaterial', 'ATS.Landing', 'ATS.Room'])
-  	
+  angular.module('ATS', ['ngRoute', 'ngMaterial', 'ATS.Landing', 'ATS.Room', 'ATS.Contributor'])
+
   	.config(["$mdThemingProvider", function($mdThemingProvider) {
     $mdThemingProvider.theme('default')
       .primaryPalette('blue')
@@ -18,6 +18,10 @@
       .when('/:roomId/', {
         controller: 'RoomController',
         templateUrl: 'modules/room/room.html'
+      })
+      .when('/', {
+        controller: 'ContributorController',
+        templateUrl: 'modules/contributor/contributor.html'
       })
       .otherwise({
         redirectTo: '/'
