@@ -47,9 +47,9 @@
         $scope.room.customDeck = deck;
         $scope.selectedDeck = deck;
         $scope.room.updatedAt = Firebase.ServerValue.TIMESTAMP;
-        $scope.room.$save();
-
-        $cookieStore.put("deck", deck);
+        $scope.room.$save().then(function() {
+          $cookieStore.put("deck", deck);
+        });
       });
     };
 
