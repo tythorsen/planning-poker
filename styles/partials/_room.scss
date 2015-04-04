@@ -1,0 +1,79 @@
+.md-button.share,
+.md-button.edit {
+  margin: 0 16px;
+}
+
+.empty-deck {
+  margin: 40px 0;
+}
+
+md-card {
+  width: auto;
+  min-width: 60px;
+
+  md-card-content {
+    padding: 16px 8px;
+    text-align: center;
+
+    p {
+      overflow: hidden;
+    }
+
+    md-input-container {
+      padding: 15px 2px 16px;
+    }
+
+    input[type='text'] {
+      transition: width 0.5s ease;
+      width: 48px;
+
+      &:focus {
+       width: 96px;
+      }
+    }
+  }
+
+  &.card-back {
+    background-image: url("../../assets/images/card_back.png");
+  }
+
+  &.selected {
+    background-color: #BBDEFB;
+    color: rgba(0,0,0,0.87);
+  }
+
+  &.choosable:hover {
+    cursor: pointer;
+    background-color: #2196F3;
+    color: rgba(255,255,255,1);
+  }  
+
+  &.no-vote {
+    box-shadow: none;
+
+    md-card-content {
+      outline: 1px dotted rgba(0,0,0,0.87);
+    }
+  }
+}
+
+.vote-completion {
+  padding: 0 32px;
+}
+
+.leader-actions {
+  padding: 16px;
+
+  button {
+    margin: 6px;
+    padding: 6px 12px;
+  }
+
+  i {
+    margin-right: 6px;
+  }
+
+  md-select {
+    margin: 0 6px;
+  }
+}

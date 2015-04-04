@@ -1,0 +1,43 @@
+&.deck-editor {
+
+  width: 80%;
+
+  md-content.sticky-container {
+    padding: 0; 
+  }
+  
+  md-content.sticky-container .dialog-content {
+    padding: 0 24px 24px; 
+  }
+  
+  .md-subheader {
+    background-color: #BBDEFB;
+    margin: 0px; 
+  }
+
+  h2.md-subheader.md-sticky-clone {
+    margin-right: 0px;
+    margin-top: 0px;
+    box-shadow: 0px 2px 4px 0 rgba(0, 0, 0, 0.16); 
+  }
+
+  h2 .md-subheader-content {
+    padding-left: 10px; 
+  }
+
+  md-card {
+    position: relative;
+
+    button {
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index: 1;
+      display: none;
+    }
+
+    &:hover button {
+      display: block;
+    }
+  }
+}

@@ -1,0 +1,30 @@
+.scale-fade {
+    
+  &.ng-enter {
+    transition: all 0.5s ease;
+    -webkit-transition: all 0.5s ease;
+    transform: scale(1.2);
+    -webkit-transform: scale(1.2);
+    opacity: 0;
+
+    &.ng-enter-active {
+      transform: scale(1);
+      -webkit-transform: scale(1);
+      opacity: 1;
+    }
+  }
+
+  &.ng-leave {
+    transition: all 0.5s ease;
+    -webkit-transition: all 0.5s ease;
+    transform: scale(1);
+    -webkit-transform: scale(1);
+    opacity: 1;
+
+    &.ng-leave-active {
+      transform: scale(1.2);
+      -webkit-transform: scale(1.2);
+      opacity: 0;
+    }
+  }
+}

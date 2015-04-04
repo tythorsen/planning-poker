@@ -1,0 +1,24 @@
+.md-toolbar-tools {
+  padding: 0 32px;
+}
+
+md-toolbar .md-toolbar-tools .md-button,
+md-toolbar .md-toolbar-tools .md-button:hover,
+md-toolbar .md-toolbar-tools .md-button:focus  {
+  box-shadow: none;
+  border: none;
+  transform: none;
+  -webkit-transform: none;
+}
+
+.thorsent-home img {
+  margin: 10px;
+}
+
+.copyright {
+  color: rgba(0,0,0,0.26);
+
+  p {
+    margin: 0;
+  }
+}

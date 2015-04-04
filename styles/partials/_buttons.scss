@@ -1,0 +1,20 @@
+.md-button.md-default-theme.md-fab.fab-flat {
+  background-color: initial;
+  box-shadow: none;
+  border: none;
+  transform: none;
+  -webkit-transform: none;
+
+  &:not([disabled]):hover,
+  &:focus {
+   background-color: rgba(158,158,158,0.2);
+  }
+
+  &.md-primary {
+    color: #2196F3;
+  }
+
+  &.md-warn {
+    color: #D32F2F;
+  }
+}
