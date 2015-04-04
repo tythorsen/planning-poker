@@ -16,7 +16,8 @@ module.exports = function(config) {
     // list of files / patterns to load in the browser
     files: [
       'dist/vendor.min.js',
-      'temp/planning-poker.js',
+      'vendor/js/angular-mocks-1.3.14.js',
+      'dist/planning-poker.min.js',
       'tests/unit/**/*Spec.js'
     ],
 
@@ -29,7 +30,7 @@ module.exports = function(config) {
     // preprocess matching files before serving them to the browser
     // available preprocessors: https://npmjs.org/browse/keyword/karma-preprocessor
     preprocessors: {
-      'temp/planning-poker.js': 'coverage'
+      'dist/planning-poker.min.js': 'coverage'
     },
 
 

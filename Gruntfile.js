@@ -5,7 +5,7 @@ module.exports = function(grunt) {
     pkg: grunt.file.readJSON('package.json'),
 
     concat: {
-      dist: {
+      app: {
         src: [
           'modules/sharedServices/SharedServices.js',
           'modules/sharedServices/FirebaseService.js',
@@ -21,9 +21,23 @@ module.exports = function(grunt) {
           'modules/contributor/ContributorFactory.js',
           'modules/App.js'
         ],
-        dest: 'temp/<%= pkg.name %>.js'
+        dest: 'dist/<%= pkg.name %>.min.js'
       },
-      vendor: {
+      vendorDev: {
+        src: [
+          'vendor/js/hammer-2.0.4.js',
+          'vendor/js/angular-1.3.14.js',
+          'vendor/js/angular-resource-1.3.14.js',
+          'vendor/js/angular-route-1.3.14.js',
+          'vendor/js/angular-animate-1.3.14.js',
+          'vendor/js/angular-aria-1.3.14.js',
+          'vendor/js/angular-material-0.8.3.js',
+          'vendor/js/firebase-2.2.3.js',
+          'vendor/js/angularfire-1.0.0.js'
+        ],
+        dest: 'dist/vendor.min.js'
+      },
+      vendorProd: {
         src: [
           'vendor/js/hammer-2.0.4.min.js',
           'vendor/js/angular-1.3.14.min.js',
@@ -31,7 +45,6 @@ module.exports = function(grunt) {
           'vendor/js/angular-route-1.3.14.min.js',
           'vendor/js/angular-animate-1.3.14.min.js',
           'vendor/js/angular-aria-1.3.14.min.js',
-          'vendor/js/angular-mocks-1.3.14.js',
           'vendor/js/angular-material-0.8.3.min.js',
           'vendor/js/firebase-2.2.3.min.js',
           'vendor/js/angularfire-1.0.0.min.js'
@@ -99,7 +112,7 @@ module.exports = function(grunt) {
     uglify: {
       dist: {
         files: {
-          'dist/<%= pkg.name %>.min.js': 'temp/<%= pkg.name %>.js'
+          'dist/<%= pkg.name %>.min.js': 'dist/<%= pkg.name %>.min.js'
         },
         screwIE8: true
       }
@@ -112,7 +125,7 @@ module.exports = function(grunt) {
       },
       js: {
         files: ['modules/**/*.js'],
-        tasks: [ 'jshint', 'concat', 'uglify']
+        tasks: [ 'jshint', 'concat:app', 'karma']
       }
     }
   });
@@ -125,7 +138,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-karma');
 
-  grunt.registerTask('default', ['jshint', 'concat', 'uglify', 'karma', 'sass:dev', 'watch']);
-  grunt.registerTask('prod', ['jshint', 'concat', 'uglify', 'karma', 'sass:dist']);
+  grunt.registerTask('default', ['jshint', 'concat:app', 'concat:vendorDev', 'karma', 'sass:dev', 'watch']);
+  grunt.registerTask('prod', ['jshint', 'concat:app', 'concat:vendorProd', 'karma', 'uglify',  'sass:dist']);
   grunt.registerTask('serve', ['connect']);
 };
