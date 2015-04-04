@@ -27,7 +27,7 @@
     };
 
     $scope.deckIsEmpty = function() {
-      return !$scope.selectedDeck.cards || $scope.selectedDeck.cards.length === 0;
+      return ! $scope.selectedDeck || !$scope.selectedDeck.cards || $scope.selectedDeck.cards.length === 0;
     };
 
     $scope.editDeck = function(ev) {
