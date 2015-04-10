@@ -45,8 +45,12 @@
       return $firebaseObject(ref);
     };
 
-    this.newRoom = function(roomId, deckIndex) {
+    this.newRoom = function(roomId) {
       var room = $firebaseObject(firebase.child('rooms').child(roomId));
+      var deckIndex = $cookieStore.get("deckIndex");
+      if (!deckIndex) {
+        deckIndex = 0;
+      }
       var customDeck = $cookieStore.get("deck");
       if (!customDeck) {
         customDeck = {

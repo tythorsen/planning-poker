@@ -9,8 +9,7 @@
 
     $scope.newRoom = function() {
       var newRoomId = FirebaseService.generateRoomId();
-      var defaultDeckIndex = 0;
-      FirebaseService.newRoom(newRoomId, defaultDeckIndex);
+      FirebaseService.newRoom(newRoomId);
       var uuid = FirebaseService.generateUserId();
       var leader = true;
       FirebaseService.newUser(newRoomId, uuid, leader);
