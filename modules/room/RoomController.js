@@ -8,7 +8,9 @@
     $scope.changeDeck = function() {
       resetVotes();
       $scope.room.updatedAt = Firebase.ServerValue.TIMESTAMP;
-      $scope.room.$save();
+      $scope.room.$save().then(function() {
+        $cookieStore.put("deckIndex", $scope.room.deckIndex);
+      });
     };
 
     $scope.chooseCard = function(cardVal, cardText, cardFA) {
@@ -108,9 +110,10 @@
         } 
         $scope.user = FirebaseService.getUser(roomId, uuid);
         $scope.cardDecks = DeckFactory.getDecks();
-        $scope.selectedDeckIndex = 0;
         $scope.voteCompletion = 0;
-        $scope.selectedDeck = $scope.cardDecks[$scope.selectedDeckIndex].cards;
+        $scope.room.$loaded(function(data) {
+          $scope.selectedDeck = $scope.cardDecks[data.deckIndex].cards;
+        });
       } else {
         $location.path("/");
       }

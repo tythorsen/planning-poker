@@ -3,6 +3,9 @@
   "version": "0.1.0",
   "description": "A planning poker app, a la hat.jit.su, built using angularJS and firebase",
   "author": "Ty Thorsen <thorsenty@gmail.com>",
+  "bugs": {
+    "url": "https://github.com/thorsenty/planning-poker/issues"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/thorsenty/planning-poker"
