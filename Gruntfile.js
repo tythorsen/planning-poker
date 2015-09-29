@@ -16,10 +16,6 @@ module.exports = function(grunt) {
           'modules/room/DeckFactory.js',
           'modules/room/DeckController.js',
           'modules/room/RoomController.js',
-          'modules/contributor/Contributor.js',
-          'modules/contributor/ContributorController.js',
-          'modules/contributor/ContributorFactory.js',
-          'modules/contributor/SupporterFactory.js',
           'modules/App.js'
         ],
         dest: 'dist/<%= pkg.name %>.min.js'

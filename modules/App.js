@@ -1,7 +1,7 @@
 (function(window, angular, undefined) {
   "use-strict";
 
-  angular.module('ATS', ['ngRoute', 'ngMaterial', 'ATS.Landing', 'ATS.Room', 'ATS.Contributor'])
+  angular.module('ATS', ['ngRoute', 'ngMaterial', 'ATS.Landing', 'ATS.Room'])
 
   	.config(["$mdThemingProvider", function($mdThemingProvider) {
     $mdThemingProvider.theme('default')
