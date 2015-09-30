@@ -4,9 +4,9 @@
  * provides you with the $firebase service which allows you to easily keep your $scope
  * variables in sync with your Firebase backend.
  *
- * AngularFire 1.0.0
+ * AngularFire 1.1.3
  * https://github.com/firebase/angularfire/
- * Date: 03/04/2015
+ * Date: 09/29/2015
  * License: MIT
  */
 (function(exports) {
@@ -16,16 +16,7 @@
 // services will live.
   angular.module("firebase", [])
     //todo use $window
-    .value("Firebase", exports.Firebase)
-
-    // used in conjunction with firebaseUtils.debounce function, this is the
-    // amount of time we will wait for additional records before triggering
-    // Angular's digest scope to dirty check and re-render DOM elements. A
-    // larger number here significantly improves performance when working with
-    // big data sets that are frequently changing in the DOM, but delays the
-    // speed at which each record is rendered in real-time. A number less than
-    // 100ms will usually be optimal.
-    .value('firebaseBatchDelay', 50 /* milliseconds */);
+    .value("Firebase", exports.Firebase);
 
 })(window);
 (function() {
@@ -77,8 +68,8 @@
    * var list = new ExtendedArray(ref);
    * </code></pre>
    */
-  angular.module('firebase').factory('$firebaseArray', ["$log", "$firebaseUtils",
-    function($log, $firebaseUtils) {
+  angular.module('firebase').factory('$firebaseArray', ["$log", "$firebaseUtils", "$q",
+    function($log, $firebaseUtils, $q) {
       /**
        * This constructor should probably never be called manually. It is used internally by
        * <code>$firebase.$asArray()</code>.
@@ -272,7 +263,8 @@
         /**
          * Listeners passed into this method are notified whenever a new change (add, updated,
          * move, remove) is received from the server. Each invocation is sent an object
-         * containing <code>{ type: 'added|updated|moved|removed', key: 'key_of_item_affected'}</code>
+         * containing <code>{ type: 'child_added|child_updated|child_moved|child_removed',
+         * key: 'key_of_item_affected'}</code>
          *
          * Additionally, added and moved events receive a prevChild parameter, containing the
          * key of the item before this one in the array.
@@ -306,7 +298,6 @@
             this._isDestroyed = true;
             this._sync.destroy(err);
             this.$list.length = 0;
-            $log.debug('destroy called for FirebaseArray: '+this.$ref().ref().toString());
           }
         },
 
@@ -606,7 +597,13 @@
       FirebaseArray.$extend = function(ChildClass, methods) {
         if( arguments.length === 1 && angular.isObject(ChildClass) ) {
           methods = ChildClass;
-          ChildClass = function() { return FirebaseArray.apply(this, arguments); };
+          ChildClass = function(ref) {
+            if( !(this instanceof ChildClass) ) {
+              return new ChildClass(ref);
+            }
+            FirebaseArray.apply(this, arguments);
+            return this.$list;
+          };
         }
         return $firebaseUtils.inherit(ChildClass, FirebaseArray, methods);
       };
@@ -654,53 +651,67 @@
         }
 
         var def     = $firebaseUtils.defer();
-        var batch   = $firebaseUtils.batch();
-        var created = batch(function(snap, prevChild) {
-          var rec = firebaseArray.$$added(snap, prevChild);
-          if( rec ) {
+        var created = function(snap, prevChild) {
+          waitForResolution(firebaseArray.$$added(snap, prevChild), function(rec) {
             firebaseArray.$$process('child_added', rec, prevChild);
-          }
-        });
-        var updated = batch(function(snap) {
+          });
+        };
+        var updated = function(snap) {
           var rec = firebaseArray.$getRecord($firebaseUtils.getKey(snap));
           if( rec ) {
-            var changed = firebaseArray.$$updated(snap);
-            if( changed ) {
+            waitForResolution(firebaseArray.$$updated(snap), function() {
               firebaseArray.$$process('child_changed', rec);
-            }
+            });
           }
-        });
-        var moved   = batch(function(snap, prevChild) {
+        };
+        var moved   = function(snap, prevChild) {
           var rec = firebaseArray.$getRecord($firebaseUtils.getKey(snap));
           if( rec ) {
-            var confirmed = firebaseArray.$$moved(snap, prevChild);
-            if( confirmed ) {
+            waitForResolution(firebaseArray.$$moved(snap, prevChild), function() {
               firebaseArray.$$process('child_moved', rec, prevChild);
-            }
+            });
           }
-        });
-        var removed = batch(function(snap) {
+        };
+        var removed = function(snap) {
           var rec = firebaseArray.$getRecord($firebaseUtils.getKey(snap));
           if( rec ) {
-            var confirmed = firebaseArray.$$removed(snap);
-            if( confirmed ) {
-              firebaseArray.$$process('child_removed', rec);
+            waitForResolution(firebaseArray.$$removed(snap), function() {
+               firebaseArray.$$process('child_removed', rec);
+            });
+          }
+        };
+
+        function waitForResolution(maybePromise, callback) {
+          var promise = $q.when(maybePromise);
+          promise.then(function(result){
+            if (result) {
+              callback(result);
             }
+          });
+          if (!isResolved) {
+            resolutionPromises.push(promise);
+          }
+        }
+
+        var resolutionPromises = [];
+        var isResolved = false;
+        var error   = $firebaseUtils.batch(function(err) {
+          _initComplete(err);
+          if( firebaseArray ) {
+            firebaseArray.$$error(err);
           }
         });
-
-        var isResolved = false;
-        var error   = batch(function(err) {
-          _initComplete(err);
-          firebaseArray.$$error(err);
-        });
-        var initComplete = batch(_initComplete);
+        var initComplete = $firebaseUtils.batch(_initComplete);
 
         var sync = {
           destroy: destroy,
           isDestroyed: false,
           init: init,
-          ready: function() { return def.promise; }
+          ready: function() { return def.promise.then(function(result){
+            return $q.all(resolutionPromises).then(function(){
+              return result;
+            });
+          }); }
         };
 
         return sync;
@@ -727,7 +738,7 @@
 
   // Define a service which provides user authentication and management.
   angular.module('firebase').factory('$firebaseAuth', [
-    '$q', '$firebaseUtils', '$log', function($q, $firebaseUtils, $log) {
+    '$q', '$firebaseUtils', function($q, $firebaseUtils) {
       /**
        * This factory returns an object allowing you to manage the client's authentication state.
        *
@@ -736,21 +747,20 @@
        * authentication state, and managing users.
        */
       return function(ref) {
-        var auth = new FirebaseAuth($q, $firebaseUtils, $log, ref);
+        var auth = new FirebaseAuth($q, $firebaseUtils, ref);
         return auth.construct();
       };
     }
   ]);
 
-  FirebaseAuth = function($q, $firebaseUtils, $log, ref) {
+  FirebaseAuth = function($q, $firebaseUtils, ref) {
     this._q = $q;
     this._utils = $firebaseUtils;
-    this._log = $log;
-
     if (typeof ref === 'string') {
       throw new Error('Please provide a Firebase reference instead of a URL when creating a `$firebaseAuth` object.');
     }
     this._ref = ref;
+    this._initialAuthResolver = this._initAuthResolver();
   };
 
   FirebaseAuth.prototype = {
@@ -969,27 +979,38 @@
      * rejected if the client is unauthenticated and rejectIfAuthDataIsNull is true.
      */
     _routerMethodOnAuthPromise: function(rejectIfAuthDataIsNull) {
-      var ref = this._ref;
+      var ref = this._ref, utils = this._utils;
+      // wait for the initial auth state to resolve; on page load we have to request auth state
+      // asynchronously so we don't want to resolve router methods or flash the wrong state
+      return this._initialAuthResolver.then(function() {
+        // auth state may change in the future so rather than depend on the initially resolved state
+        // we also check the auth data (synchronously) if a new promise is requested, ensuring we resolve
+        // to the current auth state and not a stale/initial state
+        var authData = ref.getAuth(), res = null;
+        if (rejectIfAuthDataIsNull && authData === null) {
+          res = utils.reject("AUTH_REQUIRED");
+        }
+        else {
+          res = utils.resolve(authData);
+        }
+        return res;
+      });
+    },
 
-      return this._utils.promise(function(resolve,reject){
-        function callback(authData) {
+    /**
+     * Helper that returns a promise which resolves when the initial auth state has been
+     * fetched from the Firebase server. This never rejects and resolves to undefined.
+     *
+     * @return {Promise<Object>} A promise fulfilled when the server returns initial auth state.
+     */
+    _initAuthResolver: function() {
+      var ref = this._ref;
+      return this._utils.promise(function(resolve) {
+        function callback() {
           // Turn off this onAuth() callback since we just needed to get the authentication data once.
           ref.offAuth(callback);
-
-          if (authData !== null) {
-            resolve(authData);
-            return;
-          }
-          else if (rejectIfAuthDataIsNull) {
-            reject("AUTH_REQUIRED");
-            return;
-          }
-          else {
-            resolve(null);
-            return;
-          }
+          resolve();
         }
-
         ref.onAuth(callback);
       });
     },
@@ -1078,11 +1099,13 @@
      * @return {Promise<>} An empty promise fulfilled once the email change is complete.
      */
     changeEmail: function(credentials) {
+      var deferred = this._q.defer();
+
       if (typeof this._ref.changeEmail !== 'function') {
+        throw new Error("$firebaseAuth.$changeEmail() requires Firebase version 2.1.0 or greater.");
+      } else if (typeof credentials === 'string') {
         throw new Error("$changeEmail() expects an object containing 'oldEmail', 'newEmail', and 'password', but got a string.");
       }
-
-      var deferred = this._q.defer();
 
       try {
         this._ref.changeEmail(credentials, this._utils.makeNodeResolver(deferred));
@@ -1296,7 +1319,7 @@
         /**
          * Listeners passed into this method are notified whenever a new change is received
          * from the server. Each invocation is sent an object containing
-         * <code>{ type: 'updated', key: 'my_firebase_id' }</code>
+         * <code>{ type: 'value', key: 'my_firebase_id' }</code>
          *
          * This method returns an unbind function that can be used to detach the listener.
          *
@@ -1432,7 +1455,12 @@
       FirebaseObject.$extend = function(ChildClass, methods) {
         if( arguments.length === 1 && angular.isObject(ChildClass) ) {
           methods = ChildClass;
-          ChildClass = function() { FirebaseObject.apply(this, arguments); };
+          ChildClass = function(ref) {
+            if( !(this instanceof ChildClass) ) {
+              return new ChildClass(ref);
+            }
+            FirebaseObject.apply(this, arguments);
+          };
         }
         return $firebaseUtils.inherit(ChildClass, FirebaseObject, methods);
       };
@@ -1578,8 +1606,7 @@
 
         var isResolved = false;
         var def = $firebaseUtils.defer();
-        var batch = $firebaseUtils.batch();
-        var applyUpdate = batch(function(snap) {
+        var applyUpdate = $firebaseUtils.batch(function(snap) {
           var changed = firebaseObject.$$updated(snap);
           if( changed ) {
             // notifies $watch listeners and
@@ -1587,8 +1614,13 @@
             firebaseObject.$$notify();
           }
         });
-        var error = batch(firebaseObject.$$error, firebaseObject);
-        var initComplete = batch(_initComplete);
+        var error = $firebaseUtils.batch(function(err) {
+          _initComplete(err);
+          if( firebaseObject ) {
+            firebaseObject.$$error(err);
+          }
+        });
+        var initComplete = $firebaseUtils.batch(_initComplete);
 
         var sync = {
           isDestroyed: false,
@@ -1823,8 +1855,8 @@ if ( typeof Object.getPrototypeOf !== "function" ) {
       }
     ])
 
-    .factory('$firebaseUtils', ["$q", "$timeout", "firebaseBatchDelay",
-      function($q, $timeout, firebaseBatchDelay) {
+    .factory('$firebaseUtils', ["$q", "$timeout", "$rootScope",
+      function($q, $timeout, $rootScope) {
 
         // ES6 style promises polyfill for angular 1.2.x
         // Copied from angular 1.3.x implementation: https://github.com/angular/angular.js/blob/v1.3.5/src/ng/q.js#L539
@@ -1850,88 +1882,21 @@ if ( typeof Object.getPrototypeOf !== "function" ) {
 
         var utils = {
           /**
-           * Returns a function which, each time it is invoked, will pause for `wait`
-           * milliseconds before invoking the original `fn` instance. If another
-           * request is received in that time, it resets `wait` up until `maxWait` is
-           * reached.
+           * Returns a function which, each time it is invoked, will gather up the values until
+           * the next "tick" in the Angular compiler process. Then they are all run at the same
+           * time to avoid multiple cycles of the digest loop. Internally, this is done using $evalAsync()
            *
-           * Unlike a debounce function, once wait is received, all items that have been
-           * queued will be invoked (not just once per execution). It is acceptable to use 0,
-           * which means to batch all synchronously queued items.
-           *
-           * The batch function actually returns a wrap function that should be called on each
-           * method that is to be batched.
-           *
-           * <pre><code>
-           *   var total = 0;
-           *   var batchWrapper = batch(10, 100);
-           *   var fn1 = batchWrapper(function(x) { return total += x; });
-           *   var fn2 = batchWrapper(function() { console.log(total); });
-           *   fn1(10);
-           *   fn2();
-           *   fn1(10);
-           *   fn2();
-           *   console.log(total); // 0 (nothing invoked yet)
-           *   // after 10ms will log "10" and then "20"
-           * </code></pre>
-           *
-           * @param {int} wait number of milliseconds to pause before sending out after each invocation
-           * @param {int} maxWait max milliseconds to wait before sending out, defaults to wait * 10 or 100
+           * @param {Function} action
+           * @param {Object} [context]
            * @returns {Function}
            */
-          batch: function(wait, maxWait) {
-            wait = typeof('wait') === 'number'? wait : firebaseBatchDelay;
-            if( !maxWait ) { maxWait = wait*10 || 100; }
-            var queue = [];
-            var start;
-            var cancelTimer;
-            var runScheduledForNextTick;
-
-            // returns `fn` wrapped in a function that queues up each call event to be
-            // invoked later inside fo runNow()
-            function createBatchFn(fn, context) {
-               if( typeof(fn) !== 'function' ) {
-                 throw new Error('Must provide a function to be batched. Got '+fn);
-               }
-               return function() {
-                 var args = Array.prototype.slice.call(arguments, 0);
-                 queue.push([fn, context, args]);
-                 resetTimer();
-               };
-            }
-
-            // clears the current wait timer and creates a new one
-            // however, if maxWait is exceeded, calls runNow() on the next tick.
-            function resetTimer() {
-              if( cancelTimer ) {
-                cancelTimer();
-                cancelTimer = null;
-              }
-              if( start && Date.now() - start > maxWait ) {
-                if(!runScheduledForNextTick){
-                  runScheduledForNextTick = true;
-                  utils.compile(runNow);
-                }
-              }
-              else {
-                if( !start ) { start = Date.now(); }
-                cancelTimer = utils.wait(runNow, wait);
-              }
-            }
-
-            // Clears the queue and invokes all of the functions awaiting notification
-            function runNow() {
-              cancelTimer = null;
-              start = null;
-              runScheduledForNextTick = false;
-              var copyList = queue.slice(0);
-              queue = [];
-              angular.forEach(copyList, function(parts) {
-                parts[0].apply(parts[1], parts[2]);
+          batch: function(action, context) {
+            return function() {
+              var args = Array.prototype.slice.call(arguments, 0);
+              utils.compile(function() {
+                action.apply(context, args);
               });
-            }
-
-            return createBatchFn;
+            };
           },
 
           /**
@@ -2077,7 +2042,7 @@ if ( typeof Object.getPrototypeOf !== "function" ) {
           },
 
           compile: function(fn) {
-            return $timeout(fn||function() {});
+            return $rootScope.$evalAsync(fn||function() {});
           },
 
           deepCopy: function(obj) {
@@ -2290,9 +2255,8 @@ if ( typeof Object.getPrototypeOf !== "function" ) {
           /**
            * AngularFire version number.
            */
-          VERSION: '1.0.0',
+          VERSION: '1.1.3',
 
-          batchDelay: firebaseBatchDelay,
           allPromises: $q.all.bind($q)
         };
 
