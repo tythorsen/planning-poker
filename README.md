@@ -26,7 +26,7 @@ We are also happy to announce that we've been granted an open source license for
 #### Building and Deploying the application
 
 1. Run the Grunt dev build task. The task will continue to run, watching for js or css changes. This is the default grunt task
-  *  `$ grunt [default]` 
+  *  `$ grunt [default]`
   * There is also a Grunt prod build. This task minifies js and css files, and terminates once complete (no watch)
     * `$ grunt prod`
 1. Start a local server. Uses port 4000 by default. Can be configured in `Gruntfile.js`

@@ -1,7 +1,2 @@
-npm-debug.log
 node_modules
-temp
-coverage
-
-.sass-cache
-.DS_STORE
+*.pyc
