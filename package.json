@@ -1,7 +1,7 @@
 {
   "name": "planning-poker",
   "version": "0.1.0",
-  "description": "A planning poker app, a la hat.jit.su, built using angularJS and firebase",
+  "description": "A planning poker app, a la hat.jit.su, built using Angular and Firebase",
   "author": "Ty Thorsen <thorsenty@gmail.com>",
   "bugs": {
     "url": "https://github.com/tythorsen/planning-poker/issues"
@@ -10,5 +10,11 @@
     "type": "git",
     "url": "https://github.com/tythorsen/planning-poker"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "moment": "^2.22.2",
+    "moment-timezone": "^0.5.21",
+    "require-dir": "^1.0.0",
+    "yargs": "^12.0.2"
+  }
 }
