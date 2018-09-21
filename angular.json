@@ -19,7 +19,7 @@
             "assets": [],
             "styles": [],
             "scripts": [],
-            "deployUrl": "/planning-poker/js/"
+            "deployUrl": "/planning-poker/static/"
           },
           "configurations": {
             "production": {

@@ -16,14 +16,12 @@ libraries:
 handlers:
 
 # Resources
-- url: /css
-  static_dir: static/dist/css
-- url: /html
-  static_dir: static/dist/html
-- url: /images
-  static_dir: static/dist/images
-- url: /js
-  static_dir: static/dist/js
+- url: /planning-poker/static/(.*\.js)
+  expiration: "365d"
+  mime_type: application/javascript
+  secure: always
+  static_files: dist/\1
+  upload: dist/(.*\.js)
 
 - url: .*
   script: main.app
@@ -31,13 +29,19 @@ handlers:
 
 # The following directories/files will be ignored by GAE when deploying
 skip_files:
+- ^(.*/)?.*/gulp/.*$
+- ^(.*/)?.*/node_modules/.*$
+- ^(.*/)?.*/src/.*$
 - ^(.*/)?.*\.md$
 - ^(.*/)?.*\.pyc$
 - ^(.*/)?\..*$
+
+- ^(gulp/.*)
+- ^(node_modules/.*)
+- ^(src/.*)
+
 - angular.json
 - gulpfile.js
 - package.json
 - tsconfig.json
 - yarn.lock
-- ^(gulp/.*)
-- ^(node_modules/.*)

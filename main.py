@@ -7,7 +7,7 @@ sys.path.insert(0, os.path.join(cd, 'lib'))
 
 class HomeHandler(webapp2.RequestHandler):
      def get(self, *args, **kwargs):
-         self.response.write("Hello, planning poker!")
+         self.response.write(open("dist/index.html").read())
 
 routes = [
     RedirectRoute(r"/", redirect_to="/planning-poker/", name="local_root_redirect"),
