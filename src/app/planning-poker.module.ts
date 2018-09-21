@@ -1,5 +1,8 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule} from '@angular/platform-browser';
+import { AngularFireModule } from '@angular/fire';
+import { AngularFirestoreModule } from '@angular/fire/firestore';
+import { environment } from '../environments/environment';
 
 import { PlanningPokerRoutingModule } from './planning-poker-routing.module';
 
@@ -13,6 +16,8 @@ import { PlanningPokerComponent } from './planning-poker.component';
   ],
   imports: [
     BrowserModule,
+    AngularFireModule.initializeApp(environment.firebase),
+    AngularFirestoreModule,
     PlanningPokerRoutingModule
   ],
   providers: [],

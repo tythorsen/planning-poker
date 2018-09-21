@@ -5,5 +5,12 @@
 
 export const environment = {
   production: false,
-  DRIP_OAUTH_CLIENT_ID: '61888771910561ddece0487d6a58aa83434d4fcf671a64a02d01a92e3bf9f374'
+  firebase: {
+    apiKey: 'AIzaSyB8_XvSn9-vKl_PIYe5PZbwN7ymMuo6X2I',
+    authDomain: 'ty-thorsen.firebaseapp.com',
+    databaseURL: 'https://ty-thorsen.firebaseio.com',
+    projectId: 'ty-thorsen',
+    storageBucket: 'ty-thorsen.appspot.com',
+    messagingSenderId: '950989676426'
+  }
 };

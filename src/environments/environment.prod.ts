@@ -1,4 +1,11 @@
 export const environment = {
   production: true,
-  DRIP_OAUTH_CLIENT_ID: '8c42109143a8c9fc59e785dde12558458888416a35eea78867ce50431fae1af0'
+  firebase: {
+    apiKey: 'AIzaSyB8_XvSn9-vKl_PIYe5PZbwN7ymMuo6X2I',
+    authDomain: 'ty-thorsen.firebaseapp.com',
+    databaseURL: 'https://ty-thorsen.firebaseio.com',
+    projectId: 'ty-thorsen',
+    storageBucket: 'ty-thorsen.appspot.com',
+    messagingSenderId: '950989676426'
+  }
 };
