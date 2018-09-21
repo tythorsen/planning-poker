@@ -23,6 +23,13 @@ handlers:
   static_files: dist/\1
   upload: dist/(.*\.js)
 
+- url: /planning-poker/static/(.*\.js\.map)
+  expiration: "365d"
+  mime_type: application/json
+  secure: always
+  static_files: dist/\1
+  upload: dist/(.*\.js\.map)
+
 - url: .*
   script: main.app
   secure: always
