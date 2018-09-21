@@ -34,8 +34,10 @@ skip_files:
 - ^(.*/)?.*\.md$
 - ^(.*/)?.*\.pyc$
 - ^(.*/)?\..*$
+- angular.json
 - gulpfile.js
 - package.json
+- tsconfig.json
 - yarn.lock
 - ^(gulp/.*)
 - ^(node_modules/.*)
