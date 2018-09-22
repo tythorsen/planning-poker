@@ -1,0 +1,10 @@
+@import '~@angular/material/theming';
+
+$planning-poker-primary: mat-palette($mat-blue);
+$planning-poker-accent: mat-palette($mat-purple);
+$planning-poker-warn: mat-palette($mat-red);
+
+$planning-poker-theme: mat-dark-theme($planning-poker-primary, $planning-poker-accent, $planning-poker-warn);
+
+@include mat-core();
+@include angular-material-theme($planning-poker-theme);

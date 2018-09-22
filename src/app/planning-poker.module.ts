@@ -4,6 +4,7 @@ import { AngularFireModule } from '@angular/fire';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
 import { environment } from '../environments/environment';
 
+import { PlanningPokerMaterialModule } from './planning-poker-material.module';
 import { PlanningPokerRoutingModule } from './planning-poker-routing.module';
 
 import { HomeComponent } from './home/home.component';
@@ -18,6 +19,7 @@ import { PlanningPokerComponent } from './planning-poker.component';
     BrowserModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFirestoreModule,
+    PlanningPokerMaterialModule,
     PlanningPokerRoutingModule
   ],
   providers: [],

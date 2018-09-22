@@ -10,8 +10,8 @@ export class HomeComponent implements OnInit {
   public constructor(private firestore: AngularFirestore) {}
 
   public ngOnInit() {
-    this.firestore.collection('items').add({
-      fuck: 'yeah'
+    this.firestore.collection('rooms').valueChanges().subscribe(data => {
+      console.log(data);
     });
   }
 }
