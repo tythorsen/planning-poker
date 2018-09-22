@@ -3,10 +3,10 @@ import { Component, OnInit } from '@angular/core';
 import { PlanningPokerService } from '../planning-poker.service';
 
 @Component({
-  selector: 'planning-poker-home',
-  templateUrl: './home.component.html'
+  selector: 'planning-poker-room',
+  templateUrl: './room.component.html'
 })
-export class HomeComponent implements OnInit {
+export class RoomComponent implements OnInit {
 
   public constructor(private planningPoker: PlanningPokerService) {}
 

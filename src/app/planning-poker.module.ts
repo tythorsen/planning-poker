@@ -9,11 +9,14 @@ import { PlanningPokerRoutingModule } from './planning-poker-routing.module';
 
 import { HomeComponent } from './home/home.component';
 import { PlanningPokerComponent } from './planning-poker.component';
+import { PlanningPokerService } from './planning-poker.service';
+import { RoomComponent } from './rooms/room.component';
 
 @NgModule({
   declarations: [
     HomeComponent,
-    PlanningPokerComponent
+    PlanningPokerComponent,
+    RoomComponent
   ],
   imports: [
     BrowserModule,
@@ -22,7 +25,9 @@ import { PlanningPokerComponent } from './planning-poker.component';
     PlanningPokerMaterialModule,
     PlanningPokerRoutingModule
   ],
-  providers: [],
+  providers: [
+    PlanningPokerService
+  ],
   bootstrap: [PlanningPokerComponent]
 })
 export class PlanningPokerModule { }
