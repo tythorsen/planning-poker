@@ -1,0 +1,17 @@
+@mixin mq( $screensize ) {
+
+  $properties: (
+    gt-xs: $layout-breakpoint-xs,
+    gt-sm: $layout-breakpoint-sm,
+    gt-md: $layout-breakpoint-md,
+    gt-lg: $layout-breakpoint-lg
+  );
+
+  @if map-has-key($properties, $screensize) {
+    $size : map-get($properties, $screensize);
+    @media only screen and (min-width : $size) { @content }
+  }
+  @else {
+    @media only screen and (min-width : $screensize) { @content }
+  }
+}
