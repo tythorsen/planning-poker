@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 import { PlanningPokerService } from '../planning-poker.service';
 
@@ -9,9 +10,14 @@ import { PlanningPokerService } from '../planning-poker.service';
 export class HomeComponent implements OnInit {
 
   public constructor(
-    private planningPoker: PlanningPokerService
+    private planningPoker: PlanningPokerService,
+    private router: Router
   ) {}
 
   public ngOnInit() {
+  }
+
+  public createNewRoom(): void {
+    this.router.navigate(['/rooms', this.planningPoker.generateRoomId()]);
   }
 }

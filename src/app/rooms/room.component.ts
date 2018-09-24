@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
+import { Deck } from '../decks/deck.model';
 import { PlanningPokerService } from '../planning-poker.service';
 
 @Component({
@@ -8,7 +9,11 @@ import { PlanningPokerService } from '../planning-poker.service';
 })
 export class RoomComponent implements OnInit {
 
+  public decks: Deck[];
+
   public constructor(private planningPoker: PlanningPokerService) {}
 
-  public ngOnInit() {}
+  public ngOnInit() {
+    this.decks = this.planningPoker.getDecks();
+  }
 }

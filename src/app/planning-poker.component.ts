@@ -16,9 +16,8 @@ export class PlanningPokerComponent implements OnInit, OnDestroy {
   public constructor(private planningPoker: PlanningPokerService) {}
 
   public ngOnInit(): void {
-    this.userSubscription = this.planningPoker.get_user().subscribe(user => {
+    this.userSubscription = this.planningPoker.getUser().subscribe(user => {
       this.user = user;
-      console.log(user);
     });
   }
 

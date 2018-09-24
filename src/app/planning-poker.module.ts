@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule} from '@angular/platform-browser';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AngularFireModule } from '@angular/fire';
 import { AngularFireAuthModule } from '@angular/fire/auth';
 import { AngularFirestoreModule } from '@angular/fire/firestore';
@@ -8,6 +9,7 @@ import { environment } from '../environments/environment';
 import { PlanningPokerMaterialModule } from './planning-poker-material.module';
 import { PlanningPokerRoutingModule } from './planning-poker-routing.module';
 
+import { DecksService } from './decks/decks.service';
 import { HomeComponent } from './home/home.component';
 import { PlanningPokerComponent } from './planning-poker.component';
 import { PlanningPokerService } from './planning-poker.service';
@@ -21,6 +23,7 @@ import { RoomComponent } from './rooms/room.component';
   ],
   imports: [
     BrowserModule,
+    BrowserAnimationsModule,
     AngularFireModule.initializeApp(environment.firebase),
     AngularFireAuthModule,
     AngularFirestoreModule,
@@ -28,6 +31,7 @@ import { RoomComponent } from './rooms/room.component';
     PlanningPokerRoutingModule
   ],
   providers: [
+    DecksService,
     PlanningPokerService
   ],
   bootstrap: [PlanningPokerComponent]

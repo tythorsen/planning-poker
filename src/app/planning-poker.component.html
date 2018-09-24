@@ -1,6 +1,19 @@
 <mat-toolbar>
   <span>Planning Poker</span>
   <span flex></span>
-  <img [src]="user.photoURL" height="36" width="36" *ngIf="user">
+  <span *ngIf="user">
+    <button mat-icon-button [matMenuTriggerFor]="userMenu">
+      <img [src]="user.photoURL" height="32" width="32">
+    </button>
+    <mat-menu class="planning-poker-user-menu" #userMenu="matMenu">
+      <div class="planning-poker-user-menu-header" layout="row" layout-align="center center">
+        <img [src]="user.photoURL" height="96" width="96">
+        <div>
+          <h2 [textContent]="user.displayName"></h2>
+          <p [textContent]="user.email"></p>
+        </div>
+      </div>
+    </mat-menu>
+  </span>
 </mat-toolbar>
 <router-outlet></router-outlet>
