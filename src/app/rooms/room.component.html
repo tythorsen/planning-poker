@@ -1,8 +1,13 @@
 <h1>
   This is the Planning Poker room component
 </h1>
-<mat-form-field>
-  <mat-select placeholder="Select a deck">
+<mat-form-field [formGroup]="decksForm">
+  <mat-select placeholder="Select a deck" formControlName="id">
     <mat-option *ngFor="let deck of decks" [textContent]="deck.name" [value]="deck.id"></mat-option>
   </mat-select>
 </mat-form-field>
+<div *ngIf="activeDeck">
+  <p *ngFor="let card of activeDeck.cards">
+    {{ card.text }}
+  </p>
+</div>

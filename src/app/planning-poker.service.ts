@@ -21,6 +21,10 @@ export class PlanningPokerService {
     return Math.floor(Math.random() * 899999) + 100000;
   }
 
+  public getDeck(deckId: string): Deck {
+    return this.decksService.getDeck(deckId);
+  }
+
   public getDecks(): Deck[] {
     return this.decksService.getDecks();
   }
